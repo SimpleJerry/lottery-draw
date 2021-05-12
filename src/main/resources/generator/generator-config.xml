@@ -42,6 +42,6 @@
                              targetPackage="com.jerry.lottery_draw.mapper"
                              type="XMLMAPPER"/>
 
-<!--        <table tableName="test"/>-->
+        <table tableName="test"/>
     </context>
 </generatorConfiguration>
