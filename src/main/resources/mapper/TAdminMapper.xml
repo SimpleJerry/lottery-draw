@@ -3,11 +3,11 @@
 <mapper namespace="com.jerry.lottery_draw.mapper.TAdminMapper">
   <resultMap id="BaseResultMap" type="com.jerry.lottery_draw.domain.TAdmin">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="admin_id" jdbcType="VARCHAR" property="adminId" />
-    <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, admin_id, admin_name, group_id, created_at, updated_at
+    id, account, `password`, group_id, `name`, phone
   </sql>
   <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.TAdminExample" resultMap="BaseResultMap">
     select
@@ -101,11 +101,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.jerry.lottery_draw.domain.TAdmin">
-    insert into t_admin (id, admin_id, admin_name, 
-      group_id, created_at, updated_at
+    insert into t_admin (id, account, `password`, 
+      group_id, `name`, phone
       )
-    values (#{id,jdbcType=BIGINT}, #{adminId,jdbcType=VARCHAR}, #{adminName,jdbcType=VARCHAR}, 
-      #{groupId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=BIGINT}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{groupId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.TAdmin">
@@ -114,40 +114,40 @@
       <if test="id != null">
         id,
       </if>
-      <if test="adminId != null">
-        admin_id,
+      <if test="account != null">
+        account,
       </if>
-      <if test="adminName != null">
-        admin_name,
+      <if test="password != null">
+        `password`,
       </if>
       <if test="groupId != null">
         group_id,
       </if>
-      <if test="createdAt != null">
-        created_at,
+      <if test="name != null">
+        `name`,
       </if>
-      <if test="updatedAt != null">
-        updated_at,
+      <if test="phone != null">
+        phone,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="adminId != null">
-        #{adminId,jdbcType=VARCHAR},
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
       </if>
-      <if test="adminName != null">
-        #{adminName,jdbcType=VARCHAR},
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
       </if>
       <if test="groupId != null">
         #{groupId,jdbcType=VARCHAR},
       </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="updatedAt != null">
-        #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -163,20 +163,20 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.adminId != null">
-        admin_id = #{record.adminId,jdbcType=VARCHAR},
+      <if test="record.account != null">
+        account = #{record.account,jdbcType=VARCHAR},
       </if>
-      <if test="record.adminName != null">
-        admin_name = #{record.adminName,jdbcType=VARCHAR},
+      <if test="record.password != null">
+        `password` = #{record.password,jdbcType=VARCHAR},
       </if>
       <if test="record.groupId != null">
         group_id = #{record.groupId,jdbcType=VARCHAR},
       </if>
-      <if test="record.createdAt != null">
-        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      <if test="record.name != null">
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.updatedAt != null">
-        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -186,11 +186,11 @@
   <update id="updateByExample" parameterType="map">
     update t_admin
     set id = #{record.id,jdbcType=BIGINT},
-      admin_id = #{record.adminId,jdbcType=VARCHAR},
-      admin_name = #{record.adminName,jdbcType=VARCHAR},
+      account = #{record.account,jdbcType=VARCHAR},
+      `password` = #{record.password,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR},
-      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+      `name` = #{record.name,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -198,31 +198,31 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.jerry.lottery_draw.domain.TAdmin">
     update t_admin
     <set>
-      <if test="adminId != null">
-        admin_id = #{adminId,jdbcType=VARCHAR},
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
       </if>
-      <if test="adminName != null">
-        admin_name = #{adminName,jdbcType=VARCHAR},
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
       </if>
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=VARCHAR},
       </if>
-      <if test="createdAt != null">
-        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="updatedAt != null">
-        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jerry.lottery_draw.domain.TAdmin">
     update t_admin
-    set admin_id = #{adminId,jdbcType=VARCHAR},
-      admin_name = #{adminName,jdbcType=VARCHAR},
+    set account = #{account,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=VARCHAR},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      `name` = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
