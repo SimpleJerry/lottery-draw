@@ -1,5 +1,6 @@
 package com.jerry.lottery_draw.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +10,7 @@ import org.springframework.core.env.Environment;
 
 @ComponentScan("com.jerry")
 @SpringBootApplication
+@MapperScan("com.jerry.lottery_draw.mapper")
 public class LotteryDrawApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(LotteryDrawApplication.class);
