@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jerry.lottery_draw.mapper.TAwardMapper">
+  <resultMap id="BaseResultMap" type="com.jerry.lottery_draw.domain.TAward">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="award_id" jdbcType="VARCHAR" property="awardId" />
+    <result column="award_name" jdbcType="VARCHAR" property="awardName" />
+    <result column="once_quantity" jdbcType="INTEGER" property="onceQuantity" />
+    <result column="total_quantity" jdbcType="INTEGER" property="totalQuantity" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="group_id" jdbcType="VARCHAR" property="groupId" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, award_id, award_name, once_quantity, total_quantity, priority, img, group_id, 
+    created_at, updated_at
+  </sql>
+  <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.TAwardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_award
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_award
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_award
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jerry.lottery_draw.domain.TAwardExample">
+    delete from t_award
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jerry.lottery_draw.domain.TAward">
+    insert into t_award (id, award_id, award_name, 
+      once_quantity, total_quantity, priority, 
+      img, group_id, created_at, 
+      updated_at)
+    values (#{id,jdbcType=BIGINT}, #{awardId,jdbcType=VARCHAR}, #{awardName,jdbcType=VARCHAR}, 
+      #{onceQuantity,jdbcType=INTEGER}, #{totalQuantity,jdbcType=INTEGER}, #{priority,jdbcType=INTEGER}, 
+      #{img,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.TAward">
+    insert into t_award
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="awardId != null">
+        award_id,
+      </if>
+      <if test="awardName != null">
+        award_name,
+      </if>
+      <if test="onceQuantity != null">
+        once_quantity,
+      </if>
+      <if test="totalQuantity != null">
+        total_quantity,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="awardId != null">
+        #{awardId,jdbcType=VARCHAR},
+      </if>
+      <if test="awardName != null">
+        #{awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="onceQuantity != null">
+        #{onceQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="totalQuantity != null">
+        #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jerry.lottery_draw.domain.TAwardExample" resultType="java.lang.Long">
+    select count(*) from t_award
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_award
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.awardId != null">
+        award_id = #{record.awardId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.awardName != null">
+        award_name = #{record.awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.onceQuantity != null">
+        once_quantity = #{record.onceQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalQuantity != null">
+        total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.priority != null">
+        priority = #{record.priority,jdbcType=INTEGER},
+      </if>
+      <if test="record.img != null">
+        img = #{record.img,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupId != null">
+        group_id = #{record.groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null">
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_award
+    set id = #{record.id,jdbcType=BIGINT},
+      award_id = #{record.awardId,jdbcType=VARCHAR},
+      award_name = #{record.awardName,jdbcType=VARCHAR},
+      once_quantity = #{record.onceQuantity,jdbcType=INTEGER},
+      total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
+      priority = #{record.priority,jdbcType=INTEGER},
+      img = #{record.img,jdbcType=VARCHAR},
+      group_id = #{record.groupId,jdbcType=VARCHAR},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.lottery_draw.domain.TAward">
+    update t_award
+    <set>
+      <if test="awardId != null">
+        award_id = #{awardId,jdbcType=VARCHAR},
+      </if>
+      <if test="awardName != null">
+        award_name = #{awardName,jdbcType=VARCHAR},
+      </if>
+      <if test="onceQuantity != null">
+        once_quantity = #{onceQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="totalQuantity != null">
+        total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jerry.lottery_draw.domain.TAward">
+    update t_award
+    set award_id = #{awardId,jdbcType=VARCHAR},
+      award_name = #{awardName,jdbcType=VARCHAR},
+      once_quantity = #{onceQuantity,jdbcType=INTEGER},
+      total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      priority = #{priority,jdbcType=INTEGER},
+      img = #{img,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
