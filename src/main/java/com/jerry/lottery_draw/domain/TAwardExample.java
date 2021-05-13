@@ -425,6 +425,66 @@ public class TAwardExample {
             return (Criteria) this;
         }
 
+        public Criteria andRemainQuantityIsNull() {
+            addCriterion("remain_quantity is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityIsNotNull() {
+            addCriterion("remain_quantity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityEqualTo(Integer value) {
+            addCriterion("remain_quantity =", value, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityNotEqualTo(Integer value) {
+            addCriterion("remain_quantity <>", value, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityGreaterThan(Integer value) {
+            addCriterion("remain_quantity >", value, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityGreaterThanOrEqualTo(Integer value) {
+            addCriterion("remain_quantity >=", value, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityLessThan(Integer value) {
+            addCriterion("remain_quantity <", value, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityLessThanOrEqualTo(Integer value) {
+            addCriterion("remain_quantity <=", value, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityIn(List<Integer> values) {
+            addCriterion("remain_quantity in", values, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityNotIn(List<Integer> values) {
+            addCriterion("remain_quantity not in", values, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityBetween(Integer value1, Integer value2) {
+            addCriterion("remain_quantity between", value1, value2, "remainQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainQuantityNotBetween(Integer value1, Integer value2) {
+            addCriterion("remain_quantity not between", value1, value2, "remainQuantity");
+            return (Criteria) this;
+        }
+
         public Criteria andPriorityIsNull() {
             addCriterion("priority is null");
             return (Criteria) this;

@@ -7,6 +7,7 @@
     <result column="award_name" jdbcType="VARCHAR" property="awardName" />
     <result column="once_quantity" jdbcType="INTEGER" property="onceQuantity" />
     <result column="total_quantity" jdbcType="INTEGER" property="totalQuantity" />
+    <result column="remain_quantity" jdbcType="INTEGER" property="remainQuantity" />
     <result column="priority" jdbcType="INTEGER" property="priority" />
     <result column="img" jdbcType="VARCHAR" property="img" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, award_id, award_name, once_quantity, total_quantity, priority, img, group_id, 
-    created_at, updated_at
+    id, award_id, award_name, once_quantity, total_quantity, remain_quantity, priority, 
+    img, group_id, created_at, updated_at
   </sql>
   <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.TAwardExample" resultMap="BaseResultMap">
     select
@@ -107,13 +108,13 @@
   </delete>
   <insert id="insert" parameterType="com.jerry.lottery_draw.domain.TAward">
     insert into t_award (id, award_id, award_name, 
-      once_quantity, total_quantity, priority, 
-      img, group_id, created_at, 
-      updated_at)
+      once_quantity, total_quantity, remain_quantity, 
+      priority, img, group_id, 
+      created_at, updated_at)
     values (#{id,jdbcType=BIGINT}, #{awardId,jdbcType=VARCHAR}, #{awardName,jdbcType=VARCHAR}, 
-      #{onceQuantity,jdbcType=INTEGER}, #{totalQuantity,jdbcType=INTEGER}, #{priority,jdbcType=INTEGER}, 
-      #{img,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
-      #{updatedAt,jdbcType=TIMESTAMP})
+      #{onceQuantity,jdbcType=INTEGER}, #{totalQuantity,jdbcType=INTEGER}, #{remainQuantity,jdbcType=INTEGER}, 
+      #{priority,jdbcType=INTEGER}, #{img,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.TAward">
     insert into t_award
@@ -132,6 +133,9 @@
       </if>
       <if test="totalQuantity != null">
         total_quantity,
+      </if>
+      <if test="remainQuantity != null">
+        remain_quantity,
       </if>
       <if test="priority != null">
         priority,
@@ -164,6 +168,9 @@
       </if>
       <if test="totalQuantity != null">
         #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="remainQuantity != null">
+        #{remainQuantity,jdbcType=INTEGER},
       </if>
       <if test="priority != null">
         #{priority,jdbcType=INTEGER},
@@ -206,6 +213,9 @@
       <if test="record.totalQuantity != null">
         total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
       </if>
+      <if test="record.remainQuantity != null">
+        remain_quantity = #{record.remainQuantity,jdbcType=INTEGER},
+      </if>
       <if test="record.priority != null">
         priority = #{record.priority,jdbcType=INTEGER},
       </if>
@@ -233,6 +243,7 @@
       award_name = #{record.awardName,jdbcType=VARCHAR},
       once_quantity = #{record.onceQuantity,jdbcType=INTEGER},
       total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
+      remain_quantity = #{record.remainQuantity,jdbcType=INTEGER},
       priority = #{record.priority,jdbcType=INTEGER},
       img = #{record.img,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR},
@@ -256,6 +267,9 @@
       </if>
       <if test="totalQuantity != null">
         total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="remainQuantity != null">
+        remain_quantity = #{remainQuantity,jdbcType=INTEGER},
       </if>
       <if test="priority != null">
         priority = #{priority,jdbcType=INTEGER},
@@ -281,6 +295,7 @@
       award_name = #{awardName,jdbcType=VARCHAR},
       once_quantity = #{onceQuantity,jdbcType=INTEGER},
       total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      remain_quantity = #{remainQuantity,jdbcType=INTEGER},
       priority = #{priority,jdbcType=INTEGER},
       img = #{img,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=VARCHAR},

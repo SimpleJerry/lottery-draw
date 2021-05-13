@@ -13,6 +13,8 @@ public class TAward {
 
     private Integer totalQuantity;
 
+    private Integer remainQuantity;
+
     private Integer priority;
 
     private String img;
@@ -61,6 +63,14 @@ public class TAward {
 
     public void setTotalQuantity(Integer totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+
+    public Integer getRemainQuantity() {
+        return remainQuantity;
+    }
+
+    public void setRemainQuantity(Integer remainQuantity) {
+        this.remainQuantity = remainQuantity;
     }
 
     public Integer getPriority() {
@@ -114,6 +124,7 @@ public class TAward {
         sb.append(", awardName=").append(awardName);
         sb.append(", onceQuantity=").append(onceQuantity);
         sb.append(", totalQuantity=").append(totalQuantity);
+        sb.append(", remainQuantity=").append(remainQuantity);
         sb.append(", priority=").append(priority);
         sb.append(", img=").append(img);
         sb.append(", groupId=").append(groupId);
