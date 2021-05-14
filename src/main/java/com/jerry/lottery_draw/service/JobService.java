@@ -26,6 +26,11 @@ public class JobService {
 
     @Resource
     private TJobMapper tJobMapper;
+
+    public List<String> list(String groupId) {
+        return tJobMapper.getJobIds(groupId);
+    }
+
 }
 
 
