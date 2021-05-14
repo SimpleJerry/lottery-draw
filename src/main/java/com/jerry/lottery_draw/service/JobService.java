@@ -31,6 +31,20 @@ public class JobService {
         return tJobMapper.getJobIds(groupId);
     }
 
+    public List<TEmployee> selectEmployeeByJobId(String jobId) {
+        TJobExample tJobExample = new TJobExample();
+        tJobExample.createCriteria().andJobIdEqualTo(jobId);
+        List<TJob> tJobs = tJobMapper.selectByExample(tJobExample);
+        // 将List<TJob>转化成List<TEmployee> 并返回
+        List<TEmployee> tEmployeeList = new ArrayList<>();
+        for (TJob tjob : tJobs) {
+            TEmployee tEmployee = new TEmployee();
+            BeanUtil.copyProperties(tjob, tEmployee);
+            tEmployeeList.add(tEmployee);
+        }
+        return tEmployeeList;
+    }
+
 }
 
 
