@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jerry.lottery_draw.mapper.THistoryMapper">
-  <resultMap id="BaseResultMap" type="com.jerry.lottery_draw.domain.THistory">
+<mapper namespace="com.jerry.lottery_draw.mapper.TJobMapper">
+  <resultMap id="BaseResultMap" type="com.jerry.lottery_draw.domain.TJob">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="job_id" jdbcType="VARCHAR" property="jobId" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
     <result column="group_name" jdbcType="VARCHAR" property="groupName" />
     <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
@@ -70,15 +71,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, group_id, group_name, employee_id, employee_name, award_id, award_name, `time`
+    id, job_id, group_id, group_name, employee_id, employee_name, award_id, award_name, 
+    `time`
   </sql>
-  <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.THistoryExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.TJobExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_history
+    from t_job
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,32 +91,37 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_history
+    from t_job
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_history
+    delete from t_job
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.jerry.lottery_draw.domain.THistoryExample">
-    delete from t_history
+  <delete id="deleteByExample" parameterType="com.jerry.lottery_draw.domain.TJobExample">
+    delete from t_job
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.jerry.lottery_draw.domain.THistory">
-    insert into t_history (id, group_id, group_name, 
-      employee_id, employee_name, award_id, 
-      award_name, `time`)
-    values (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, 
-      #{employeeId,jdbcType=VARCHAR}, #{employeeName,jdbcType=VARCHAR}, #{awardId,jdbcType=VARCHAR}, 
-      #{awardName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.jerry.lottery_draw.domain.TJob">
+    insert into t_job (id, job_id, group_id, 
+      group_name, employee_id, employee_name, 
+      award_id, award_name, `time`
+      )
+    values (#{id,jdbcType=BIGINT}, #{jobId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, 
+      #{groupName,jdbcType=VARCHAR}, #{employeeId,jdbcType=VARCHAR}, #{employeeName,jdbcType=VARCHAR}, 
+      #{awardId,jdbcType=VARCHAR}, #{awardName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.THistory">
-    insert into t_history
+  <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.TJob">
+    insert into t_job
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="jobId != null">
+        job_id,
       </if>
       <if test="groupId != null">
         group_id,
@@ -142,6 +149,9 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="jobId != null">
+        #{jobId,jdbcType=VARCHAR},
+      </if>
       <if test="groupId != null">
         #{groupId,jdbcType=VARCHAR},
       </if>
@@ -165,17 +175,20 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.jerry.lottery_draw.domain.THistoryExample" resultType="java.lang.Long">
-    select count(*) from t_history
+  <select id="countByExample" parameterType="com.jerry.lottery_draw.domain.TJobExample" resultType="java.lang.Long">
+    select count(*) from t_job
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_history
+    update t_job
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.jobId != null">
+        job_id = #{record.jobId,jdbcType=VARCHAR},
       </if>
       <if test="record.groupId != null">
         group_id = #{record.groupId,jdbcType=VARCHAR},
@@ -204,8 +217,9 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_history
+    update t_job
     set id = #{record.id,jdbcType=BIGINT},
+      job_id = #{record.jobId,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR},
       group_name = #{record.groupName,jdbcType=VARCHAR},
       employee_id = #{record.employeeId,jdbcType=VARCHAR},
@@ -217,9 +231,12 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.lottery_draw.domain.THistory">
-    update t_history
+  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.lottery_draw.domain.TJob">
+    update t_job
     <set>
+      <if test="jobId != null">
+        job_id = #{jobId,jdbcType=VARCHAR},
+      </if>
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=VARCHAR},
       </if>
@@ -244,9 +261,10 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jerry.lottery_draw.domain.THistory">
-    update t_history
-    set group_id = #{groupId,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.jerry.lottery_draw.domain.TJob">
+    update t_job
+    set job_id = #{jobId,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=VARCHAR},
       group_name = #{groupName,jdbcType=VARCHAR},
       employee_id = #{employeeId,jdbcType=VARCHAR},
       employee_name = #{employeeName,jdbcType=VARCHAR},

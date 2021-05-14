@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jerry.lottery_draw.mapper.TUserMapper">
-  <resultMap id="BaseResultMap" type="com.jerry.lottery_draw.domain.TUser">
+<mapper namespace="com.jerry.lottery_draw.mapper.TEmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.jerry.lottery_draw.domain.TEmployee">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
+    <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
     <result column="department" jdbcType="VARCHAR" property="department" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -69,15 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, user_name, department, group_id, created_at, updated_at
+    id, employee_id, employee_name, department, group_id, created_at, updated_at
   </sql>
-  <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.TUserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.TEmployeeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_user
+    from t_employee
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,38 +88,38 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_user
+    from t_employee
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_user
+    delete from t_employee
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.jerry.lottery_draw.domain.TUserExample">
-    delete from t_user
+  <delete id="deleteByExample" parameterType="com.jerry.lottery_draw.domain.TEmployeeExample">
+    delete from t_employee
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.jerry.lottery_draw.domain.TUser">
-    insert into t_user (id, user_id, user_name, 
+  <insert id="insert" parameterType="com.jerry.lottery_draw.domain.TEmployee">
+    insert into t_employee (id, employee_id, employee_name, 
       department, group_id, created_at, 
       updated_at)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{employeeId,jdbcType=VARCHAR}, #{employeeName,jdbcType=VARCHAR}, 
       #{department,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.TUser">
-    insert into t_user
+  <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.TEmployee">
+    insert into t_employee
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="userId != null">
-        user_id,
+      <if test="employeeId != null">
+        employee_id,
       </if>
-      <if test="userName != null">
-        user_name,
+      <if test="employeeName != null">
+        employee_name,
       </if>
       <if test="department != null">
         department,
@@ -138,11 +138,11 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=VARCHAR},
+      <if test="employeeId != null">
+        #{employeeId,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
+      <if test="employeeName != null">
+        #{employeeName,jdbcType=VARCHAR},
       </if>
       <if test="department != null">
         #{department,jdbcType=VARCHAR},
@@ -158,23 +158,23 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.jerry.lottery_draw.domain.TUserExample" resultType="java.lang.Long">
-    select count(*) from t_user
+  <select id="countByExample" parameterType="com.jerry.lottery_draw.domain.TEmployeeExample" resultType="java.lang.Long">
+    select count(*) from t_employee
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_user
+    update t_employee
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=VARCHAR},
+      <if test="record.employeeId != null">
+        employee_id = #{record.employeeId,jdbcType=VARCHAR},
       </if>
-      <if test="record.userName != null">
-        user_name = #{record.userName,jdbcType=VARCHAR},
+      <if test="record.employeeName != null">
+        employee_name = #{record.employeeName,jdbcType=VARCHAR},
       </if>
       <if test="record.department != null">
         department = #{record.department,jdbcType=VARCHAR},
@@ -194,10 +194,10 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_user
+    update t_employee
     set id = #{record.id,jdbcType=BIGINT},
-      user_id = #{record.userId,jdbcType=VARCHAR},
-      user_name = #{record.userName,jdbcType=VARCHAR},
+      employee_id = #{record.employeeId,jdbcType=VARCHAR},
+      employee_name = #{record.employeeName,jdbcType=VARCHAR},
       department = #{record.department,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
@@ -206,14 +206,14 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.lottery_draw.domain.TUser">
-    update t_user
+  <update id="updateByPrimaryKeySelective" parameterType="com.jerry.lottery_draw.domain.TEmployee">
+    update t_employee
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=VARCHAR},
+      <if test="employeeId != null">
+        employee_id = #{employeeId,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
+      <if test="employeeName != null">
+        employee_name = #{employeeName,jdbcType=VARCHAR},
       </if>
       <if test="department != null">
         department = #{department,jdbcType=VARCHAR},
@@ -230,10 +230,10 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jerry.lottery_draw.domain.TUser">
-    update t_user
-    set user_id = #{userId,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.jerry.lottery_draw.domain.TEmployee">
+    update t_employee
+    set employee_id = #{employeeId,jdbcType=VARCHAR},
+      employee_name = #{employeeName,jdbcType=VARCHAR},
       department = #{department,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},

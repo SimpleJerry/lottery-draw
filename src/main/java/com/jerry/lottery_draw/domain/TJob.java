@@ -2,8 +2,10 @@ package com.jerry.lottery_draw.domain;
 
 import java.util.Date;
 
-public class THistory {
+public class TJob {
     private Long id;
+
+    private String jobId;
 
     private String groupId;
 
@@ -25,6 +27,14 @@ public class THistory {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
     }
 
     public String getGroupId() {
@@ -90,6 +100,7 @@ public class THistory {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", jobId=").append(jobId);
         sb.append(", groupId=").append(groupId);
         sb.append(", groupName=").append(groupName);
         sb.append(", employeeId=").append(employeeId);

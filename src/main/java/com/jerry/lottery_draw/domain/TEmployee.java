@@ -2,12 +2,12 @@ package com.jerry.lottery_draw.domain;
 
 import java.util.Date;
 
-public class TUser {
+public class TEmployee {
     private Long id;
 
-    private String userId;
+    private String employeeId;
 
-    private String userName;
+    private String employeeName;
 
     private String department;
 
@@ -25,20 +25,20 @@ public class TUser {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getEmployeeId() {
+        return employeeId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
     public String getDepartment() {
@@ -80,8 +80,8 @@ public class TUser {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", userId=").append(userId);
-        sb.append(", userName=").append(userName);
+        sb.append(", employeeId=").append(employeeId);
+        sb.append(", employeeName=").append(employeeName);
         sb.append(", department=").append(department);
         sb.append(", groupId=").append(groupId);
         sb.append(", createdAt=").append(createdAt);

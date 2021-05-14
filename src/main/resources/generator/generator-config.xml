@@ -45,8 +45,9 @@
         <table tableName="test"/>
         <table tableName="t_admin"/>
         <table tableName="t_group"/>
-        <table tableName="t_user"/>
+        <table tableName="t_employee"/>
         <table tableName="t_award"/>
+        <table tableName="t_job"/>
         <table tableName="t_history"/>
     </context>
 </generatorConfiguration>
