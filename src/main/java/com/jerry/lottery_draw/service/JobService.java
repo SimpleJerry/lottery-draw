@@ -1,19 +1,11 @@
 package com.jerry.lottery_draw.service;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.jerry.lottery_draw.domain.TEmployee;
 import com.jerry.lottery_draw.domain.TJob;
 import com.jerry.lottery_draw.domain.TJobExample;
-import com.jerry.lottery_draw.exception.BusinessException;
-import com.jerry.lottery_draw.exception.BusinessExceptionCode;
-import com.jerry.lottery_draw.mapper.TEmployeeMapper;
-import com.jerry.lottery_draw.mapper.THistoryMapper;
 import com.jerry.lottery_draw.mapper.TJobMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -27,22 +19,19 @@ public class JobService {
     @Resource
     private TJobMapper tJobMapper;
 
-    public List<String> list(String groupId) {
+    public List<String> selectJobIdsByGroupId(String groupId) {
         return tJobMapper.getJobIds(groupId);
     }
 
-    public List<TEmployee> selectEmployeeByJobId(String jobId) {
+    public List<String> selectEmployeeIdsByJobId(String jobId) {
         TJobExample tJobExample = new TJobExample();
         tJobExample.createCriteria().andJobIdEqualTo(jobId);
         List<TJob> tJobs = tJobMapper.selectByExample(tJobExample);
-        // 将List<TJob>转化成List<TEmployee> 并返回
-        List<TEmployee> tEmployeeList = new ArrayList<>();
+        List<String> employeeIds = new ArrayList<>();
         for (TJob tjob : tJobs) {
-            TEmployee tEmployee = new TEmployee();
-            BeanUtil.copyProperties(tjob, tEmployee);
-            tEmployeeList.add(tEmployee);
+            employeeIds.add(tjob.getEmployeeId());
         }
-        return tEmployeeList;
+        return employeeIds;
     }
 
 }
