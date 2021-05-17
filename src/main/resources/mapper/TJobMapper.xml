@@ -5,11 +5,8 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="job_id" jdbcType="VARCHAR" property="jobId" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
-    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
     <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
-    <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
     <result column="award_id" jdbcType="VARCHAR" property="awardId" />
-    <result column="award_name" jdbcType="VARCHAR" property="awardName" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -71,8 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, job_id, group_id, group_name, employee_id, employee_name, award_id, award_name, 
-    `time`
+    id, job_id, group_id, employee_id, award_id, `time`
   </sql>
   <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.TJobExample" resultMap="BaseResultMap">
     select
@@ -106,12 +102,10 @@
   </delete>
   <insert id="insert" parameterType="com.jerry.lottery_draw.domain.TJob">
     insert into t_job (id, job_id, group_id, 
-      group_name, employee_id, employee_name, 
-      award_id, award_name, `time`
+      employee_id, award_id, `time`
       )
     values (#{id,jdbcType=BIGINT}, #{jobId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, 
-      #{groupName,jdbcType=VARCHAR}, #{employeeId,jdbcType=VARCHAR}, #{employeeName,jdbcType=VARCHAR}, 
-      #{awardId,jdbcType=VARCHAR}, #{awardName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
+      #{employeeId,jdbcType=VARCHAR}, #{awardId,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.TJob">
@@ -126,20 +120,11 @@
       <if test="groupId != null">
         group_id,
       </if>
-      <if test="groupName != null">
-        group_name,
-      </if>
       <if test="employeeId != null">
         employee_id,
       </if>
-      <if test="employeeName != null">
-        employee_name,
-      </if>
       <if test="awardId != null">
         award_id,
-      </if>
-      <if test="awardName != null">
-        award_name,
       </if>
       <if test="time != null">
         `time`,
@@ -155,20 +140,11 @@
       <if test="groupId != null">
         #{groupId,jdbcType=VARCHAR},
       </if>
-      <if test="groupName != null">
-        #{groupName,jdbcType=VARCHAR},
-      </if>
       <if test="employeeId != null">
         #{employeeId,jdbcType=VARCHAR},
       </if>
-      <if test="employeeName != null">
-        #{employeeName,jdbcType=VARCHAR},
-      </if>
       <if test="awardId != null">
         #{awardId,jdbcType=VARCHAR},
-      </if>
-      <if test="awardName != null">
-        #{awardName,jdbcType=VARCHAR},
       </if>
       <if test="time != null">
         #{time,jdbcType=TIMESTAMP},
@@ -193,20 +169,11 @@
       <if test="record.groupId != null">
         group_id = #{record.groupId,jdbcType=VARCHAR},
       </if>
-      <if test="record.groupName != null">
-        group_name = #{record.groupName,jdbcType=VARCHAR},
-      </if>
       <if test="record.employeeId != null">
         employee_id = #{record.employeeId,jdbcType=VARCHAR},
       </if>
-      <if test="record.employeeName != null">
-        employee_name = #{record.employeeName,jdbcType=VARCHAR},
-      </if>
       <if test="record.awardId != null">
         award_id = #{record.awardId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.awardName != null">
-        award_name = #{record.awardName,jdbcType=VARCHAR},
       </if>
       <if test="record.time != null">
         `time` = #{record.time,jdbcType=TIMESTAMP},
@@ -221,11 +188,8 @@
     set id = #{record.id,jdbcType=BIGINT},
       job_id = #{record.jobId,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR},
-      group_name = #{record.groupName,jdbcType=VARCHAR},
       employee_id = #{record.employeeId,jdbcType=VARCHAR},
-      employee_name = #{record.employeeName,jdbcType=VARCHAR},
       award_id = #{record.awardId,jdbcType=VARCHAR},
-      award_name = #{record.awardName,jdbcType=VARCHAR},
       `time` = #{record.time,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -240,20 +204,11 @@
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=VARCHAR},
       </if>
-      <if test="groupName != null">
-        group_name = #{groupName,jdbcType=VARCHAR},
-      </if>
       <if test="employeeId != null">
         employee_id = #{employeeId,jdbcType=VARCHAR},
       </if>
-      <if test="employeeName != null">
-        employee_name = #{employeeName,jdbcType=VARCHAR},
-      </if>
       <if test="awardId != null">
         award_id = #{awardId,jdbcType=VARCHAR},
-      </if>
-      <if test="awardName != null">
-        award_name = #{awardName,jdbcType=VARCHAR},
       </if>
       <if test="time != null">
         `time` = #{time,jdbcType=TIMESTAMP},
@@ -265,11 +220,8 @@
     update t_job
     set job_id = #{jobId,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=VARCHAR},
-      group_name = #{groupName,jdbcType=VARCHAR},
       employee_id = #{employeeId,jdbcType=VARCHAR},
-      employee_name = #{employeeName,jdbcType=VARCHAR},
       award_id = #{awardId,jdbcType=VARCHAR},
-      award_name = #{awardName,jdbcType=VARCHAR},
       `time` = #{time,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
