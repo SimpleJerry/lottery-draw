@@ -23,6 +23,12 @@ public class JobService {
         return tJobMapper.getJobIds(groupId);
     }
 
+    /**
+     * 根据JobId获取获奖人员Id
+     *
+     * @param jobId
+     * @return
+     */
     public List<String> selectEmployeeIdsByJobId(String jobId) {
         TJobExample tJobExample = new TJobExample();
         tJobExample.createCriteria().andJobIdEqualTo(jobId);

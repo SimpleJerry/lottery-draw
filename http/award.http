@@ -1,0 +1,9 @@
+### Send POST request with json body
+POST http://localhost:8880/award/lottery-draw
+Content-Type: application/json
+
+{
+  "jobId": "1394187297934675968",
+  "awardId": "A_0001",
+  "groupId": "G_0001"
+}
