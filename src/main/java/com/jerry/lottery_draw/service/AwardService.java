@@ -44,7 +44,7 @@ public class AwardService {
     private THistoryMapper tHistoryMapper;
 
     /**
-     * 根据groupId和awardId查找一个奖品类型
+     * 根据awardId查询某奖品种类信息
      *
      * @param awardId
      * @return
@@ -61,6 +61,25 @@ public class AwardService {
         }
     }
 
+    /**
+     * 根据groupId查询其下所有奖品种类
+     *
+     * @param groupId
+     * @return
+     */
+    public List<TAward> selectAwardsByGroupId(String groupId) {
+        TAwardExample tAwardExample = new TAwardExample();
+        tAwardExample.createCriteria().andGroupIdEqualTo(groupId);
+        List<TAward> awardList = tAwardMapper.selectByExample(tAwardExample);
+        return awardList;
+    }
+
+    /**
+     * 根据传参抽取相应的奖品并返回
+     *
+     * @param req
+     * @return
+     */
     public AwardLotteryDrawResp drawLottery(AwardLotteryDrawReq req) {
         // 通过awardId，查询到相应的award
         TAward tAward = selectAwardByAwardId(req.getAwardId());
