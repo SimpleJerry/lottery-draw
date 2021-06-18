@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local_jerry
+ Source Server         : lacal_root
  Source Server Type    : MySQL
  Source Server Version : 80020
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 17/05/2021 15:17:38
+ Date: 18/06/2021 17:24:22
 */
 
 SET NAMES utf8mb4;
@@ -22,16 +22,16 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_admin`;
 CREATE TABLE `t_admin`  (
-                            `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                            `account` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `phone` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            PRIMARY KEY (`id`) USING BTREE,
-                            INDEX `fk_admin2group`(`group_id`) USING BTREE,
-                            CONSTRAINT `fk_admin2group` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `account` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `password` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `phone` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_admin2group`(`group_id`) USING BTREE,
+  CONSTRAINT `fk_admin2group` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_admin
@@ -43,21 +43,21 @@ INSERT INTO `t_admin` VALUES (1, 'admin', 'admin', 'G_0001', 'Jerry', '158007195
 -- ----------------------------
 DROP TABLE IF EXISTS `t_award`;
 CREATE TABLE `t_award`  (
-                            `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                            `award_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `award_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `once_quantity` int(0) NOT NULL,
-                            `total_quantity` int(0) NOT NULL,
-                            `remain_quantity` int(0) NOT NULL,
-                            `priority` int(0) NOT NULL,
-                            `img` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-                            `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-                            PRIMARY KEY (`id`) USING BTREE,
-                            INDEX `fk_group2award`(`group_id`) USING BTREE,
-                            INDEX `award_id`(`award_id`) USING BTREE,
-                            CONSTRAINT `fk_group2award` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `award_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '奖品id',
+  `award_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '奖品名称',
+  `once_quantity` int(0) NOT NULL COMMENT '单次抽取数',
+  `total_quantity` int(0) NOT NULL COMMENT '奖品总数',
+  `remain_quantity` int(0) NOT NULL COMMENT '奖品剩余数',
+  `priority` int(0) NOT NULL COMMENT '优先级',
+  `img` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图片路径',
+  `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '组织id',
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_group2award`(`group_id`) USING BTREE,
+  INDEX `award_id`(`award_id`) USING BTREE,
+  CONSTRAINT `fk_group2award` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -73,17 +73,17 @@ INSERT INTO `t_award` VALUES (4, 'A_0004', '三等奖', 5, 20, 20, 4, '', 'G_000
 -- ----------------------------
 DROP TABLE IF EXISTS `t_employee`;
 CREATE TABLE `t_employee`  (
-                               `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                               `employee_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                               `employee_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                               `department` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                               `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                               `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-                               `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-                               PRIMARY KEY (`id`) USING BTREE,
-                               INDEX `fk_group2employee`(`group_id`) USING BTREE,
-                               INDEX `employee_id`(`employee_id`) USING BTREE,
-                               CONSTRAINT `fk_group2employee` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `employee_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `employee_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `department` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_group2employee`(`group_id`) USING BTREE,
+  INDEX `employee_id`(`employee_id`) USING BTREE,
+  CONSTRAINT `fk_group2employee` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 135 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -195,14 +195,14 @@ INSERT INTO `t_employee` VALUES (134, 'E_0099', '麻纨', '开发部', 'G_0001',
 -- ----------------------------
 DROP TABLE IF EXISTS `t_group`;
 CREATE TABLE `t_group`  (
-                            `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                            `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `group_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-                            `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-                            `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-                            PRIMARY KEY (`id`) USING BTREE,
-                            INDEX `group_id`(`group_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `group_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `group_id`(`group_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_group
@@ -215,19 +215,19 @@ INSERT INTO `t_group` VALUES (2, 'G_0002', '腾讯', '2021-05-12 15:21:35', '202
 -- ----------------------------
 DROP TABLE IF EXISTS `t_history`;
 CREATE TABLE `t_history`  (
-                              `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                              `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
-                              `employee_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
-                              `award_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
-                              `time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-                              PRIMARY KEY (`id`) USING BTREE,
-                              INDEX `fk_group2history`(`group_id`) USING BTREE,
-                              INDEX `fk_award2history`(`award_id`) USING BTREE,
-                              INDEX `fk_employee2history`(`employee_id`) USING BTREE,
-                              CONSTRAINT `fk_award2history` FOREIGN KEY (`award_id`) REFERENCES `t_award` (`award_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                              CONSTRAINT `fk_employee2history` FOREIGN KEY (`employee_id`) REFERENCES `t_employee` (`employee_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                              CONSTRAINT `fk_group2history` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `employee_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `award_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_group2history`(`group_id`) USING BTREE,
+  INDEX `fk_award2history`(`award_id`) USING BTREE,
+  INDEX `fk_employee2history`(`employee_id`) USING BTREE,
+  CONSTRAINT `fk_award2history` FOREIGN KEY (`award_id`) REFERENCES `t_award` (`award_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_employee2history` FOREIGN KEY (`employee_id`) REFERENCES `t_employee` (`employee_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_group2history` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_history
@@ -243,20 +243,20 @@ INSERT INTO `t_history` VALUES (15, 'G_0001', 'E_0050', 'A_0001', '2021-05-17 15
 -- ----------------------------
 DROP TABLE IF EXISTS `t_job`;
 CREATE TABLE `t_job`  (
-                          `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                          `job_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
-                          `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
-                          `employee_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
-                          `award_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
-                          `time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
-                          PRIMARY KEY (`id`) USING BTREE,
-                          INDEX `fk_group2history`(`group_id`) USING BTREE,
-                          INDEX `fk_award2history`(`award_id`) USING BTREE,
-                          INDEX `fk_employee2history`(`employee_id`) USING BTREE,
-                          CONSTRAINT `t_job_ibfk_1` FOREIGN KEY (`award_id`) REFERENCES `t_award` (`award_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                          CONSTRAINT `t_job_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                          CONSTRAINT `t_job_ibfk_3` FOREIGN KEY (`employee_id`) REFERENCES `t_employee` (`employee_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `job_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `employee_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `award_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+  `time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_group2history`(`group_id`) USING BTREE,
+  INDEX `fk_award2history`(`award_id`) USING BTREE,
+  INDEX `fk_employee2history`(`employee_id`) USING BTREE,
+  CONSTRAINT `t_job_ibfk_1` FOREIGN KEY (`award_id`) REFERENCES `t_award` (`award_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `t_job_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `t_job_ibfk_3` FOREIGN KEY (`employee_id`) REFERENCES `t_employee` (`employee_id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_job
@@ -272,10 +272,10 @@ INSERT INTO `t_job` VALUES (20, '1394187297934675968', 'G_0001', 'E_0050', 'A_00
 -- ----------------------------
 DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test`  (
-                         `id` bigint(0) NOT NULL COMMENT 'id',
-                         `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '名称',
-                         `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '密码',
-                         PRIMARY KEY (`id`) USING BTREE
+  `id` bigint(0) NOT NULL COMMENT 'id',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '名称',
+  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '密码',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '测试' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
