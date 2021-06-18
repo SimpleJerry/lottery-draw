@@ -25,8 +25,8 @@ public class AwardController {
         return resp;
     }
 
-    @GetMapping("/show/{awardId}")
-    public CommonResp show(@PathVariable("awardId") String awardId){
+    @GetMapping("/show-one/{awardId}")
+    public CommonResp showOne(@PathVariable("awardId") String awardId){
         CommonResp<TAward> resp = new CommonResp<>();
         TAward award = awardService.selectAwardByAwardId(awardId);
         resp.setContent(award);
