@@ -1,18 +1,18 @@
 <template>
   <a-layout-content style="padding: 0 50px">
-    <a-breadcrumb style="margin: 16px 0">
-      <a-breadcrumb-item>Home</a-breadcrumb-item>
-      <a-breadcrumb-item>List</a-breadcrumb-item>
-      <a-breadcrumb-item>App</a-breadcrumb-item>
-    </a-breadcrumb>
+    <!-- 主页面 -->
     <a-layout style="padding: 24px 0; background: #fff">
+      <!-- 侧边栏 -->
       <a-layout-sider width="200" style="background: #fff">
         <a-menu
           mode="inline"
-          v-model:selectedKeys="selectedKeys2"
-          v-model:openKeys="openKeys"
-          style="height: 100%"
+          :style="{ height: '100%', borderRight: 0 }"
+          @click="handleClick"
         >
+          <a-menu-item key="welcome">
+            <MailOutlined />
+            <span>欢迎</span>
+          </a-menu-item>
           <a-sub-menu key="sub1">
             <template #title>
               <span>
@@ -51,8 +51,10 @@
           </a-sub-menu>
         </a-menu>
       </a-layout-sider>
+      <!-- 内容栏 -->
       <a-layout-content :style="{ padding: '0 24px', minHeight: '280px' }">
         Content
+        <router-view />
       </a-layout-content>
     </a-layout>
   </a-layout-content>
@@ -64,5 +66,13 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "home",
   components: {},
+  methods: {
+    //路由内容切换
+    handleClick(route) {
+      console.log(route);
+      //获取路由对象并切换
+      this.$router.push(route);
+    },
+  },
 });
 </script>
