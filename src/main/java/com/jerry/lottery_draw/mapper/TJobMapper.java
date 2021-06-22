@@ -27,6 +27,4 @@ public interface TJobMapper {
     int updateByPrimaryKeySelective(TJob record);
 
     int updateByPrimaryKey(TJob record);
-
-    List<String> getJobIds(String groupId);
 }

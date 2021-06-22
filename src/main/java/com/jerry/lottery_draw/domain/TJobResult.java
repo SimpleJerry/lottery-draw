@@ -2,12 +2,16 @@ package com.jerry.lottery_draw.domain;
 
 import java.util.Date;
 
-public class TJob {
+public class TJobResult {
     private Long id;
 
     private String jobId;
 
     private String groupId;
+
+    private String employeeId;
+
+    private String awardId;
 
     private Date time;
 
@@ -35,6 +39,22 @@ public class TJob {
         this.groupId = groupId;
     }
 
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getAwardId() {
+        return awardId;
+    }
+
+    public void setAwardId(String awardId) {
+        this.awardId = awardId;
+    }
+
     public Date getTime() {
         return time;
     }
@@ -52,6 +72,8 @@ public class TJob {
         sb.append(", id=").append(id);
         sb.append(", jobId=").append(jobId);
         sb.append(", groupId=").append(groupId);
+        sb.append(", employeeId=").append(employeeId);
+        sb.append(", awardId=").append(awardId);
         sb.append(", time=").append(time);
         sb.append("]");
         return sb.toString();

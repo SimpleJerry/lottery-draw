@@ -3,6 +3,7 @@
 <mapper namespace="com.jerry.lottery_draw.mapper.THistoryMapper">
   <resultMap id="BaseResultMap" type="com.jerry.lottery_draw.domain.THistory">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="job_id" jdbcType="VARCHAR" property="jobId" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
     <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
     <result column="award_id" jdbcType="VARCHAR" property="awardId" />
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, group_id, employee_id, award_id, `time`
+    id, job_id, group_id, employee_id, award_id, `time`
   </sql>
   <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.THistoryExample" resultMap="BaseResultMap">
     select
@@ -100,16 +101,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.jerry.lottery_draw.domain.THistory">
-    insert into t_history (id, group_id, employee_id, 
-      award_id, `time`)
-    values (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=VARCHAR}, #{employeeId,jdbcType=VARCHAR}, 
-      #{awardId,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+    insert into t_history (id, job_id, group_id, 
+      employee_id, award_id, `time`
+      )
+    values (#{id,jdbcType=BIGINT}, #{jobId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, 
+      #{employeeId,jdbcType=VARCHAR}, #{awardId,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.THistory">
     insert into t_history
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="jobId != null">
+        job_id,
       </if>
       <if test="groupId != null">
         group_id,
@@ -127,6 +133,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
+      </if>
+      <if test="jobId != null">
+        #{jobId,jdbcType=VARCHAR},
       </if>
       <if test="groupId != null">
         #{groupId,jdbcType=VARCHAR},
@@ -154,6 +163,9 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.jobId != null">
+        job_id = #{record.jobId,jdbcType=VARCHAR},
+      </if>
       <if test="record.groupId != null">
         group_id = #{record.groupId,jdbcType=VARCHAR},
       </if>
@@ -174,6 +186,7 @@
   <update id="updateByExample" parameterType="map">
     update t_history
     set id = #{record.id,jdbcType=BIGINT},
+      job_id = #{record.jobId,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR},
       employee_id = #{record.employeeId,jdbcType=VARCHAR},
       award_id = #{record.awardId,jdbcType=VARCHAR},
@@ -185,6 +198,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.jerry.lottery_draw.domain.THistory">
     update t_history
     <set>
+      <if test="jobId != null">
+        job_id = #{jobId,jdbcType=VARCHAR},
+      </if>
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=VARCHAR},
       </if>
@@ -202,7 +218,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jerry.lottery_draw.domain.THistory">
     update t_history
-    set group_id = #{groupId,jdbcType=VARCHAR},
+    set job_id = #{jobId,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=VARCHAR},
       employee_id = #{employeeId,jdbcType=VARCHAR},
       award_id = #{awardId,jdbcType=VARCHAR},
       `time` = #{time,jdbcType=TIMESTAMP}

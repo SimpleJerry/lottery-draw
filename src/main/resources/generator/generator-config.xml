@@ -48,6 +48,7 @@
         <table tableName="t_employee"/>
         <table tableName="t_award"/>
         <table tableName="t_job"/>
+        <table tableName="t_job_result"/>
         <table tableName="t_history"/>
     </context>
 </generatorConfiguration>

@@ -5,6 +5,8 @@ import java.util.Date;
 public class THistory {
     private Long id;
 
+    private String jobId;
+
     private String groupId;
 
     private String employeeId;
@@ -19,6 +21,14 @@ public class THistory {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
     }
 
     public String getGroupId() {
@@ -60,6 +70,7 @@ public class THistory {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", jobId=").append(jobId);
         sb.append(", groupId=").append(groupId);
         sb.append(", employeeId=").append(employeeId);
         sb.append(", awardId=").append(awardId);
