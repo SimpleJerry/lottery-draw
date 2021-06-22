@@ -1,5 +1,6 @@
 package com.jerry.lottery_draw.controller;
 
+import com.jerry.lottery_draw.domain.TJob;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.JobService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,14 +18,24 @@ public class JobController {
     @Resource
     private JobService jobService;
 
-    @GetMapping("/list/jobId/{groupId}")
-    public CommonResp listJobId(@PathVariable String groupId) {
-        CommonResp<List<String>> resp = new CommonResp<>();
-        resp.setContent(jobService.selectJobIdsByGroupId(groupId));
+    /**
+     * 根据groupId查询其下的所有Job信息
+     * @param groupId
+     * @return
+     */
+    @GetMapping("/list/{groupId}")
+    public CommonResp listJob(@PathVariable String groupId) {
+        CommonResp<List<TJob>> resp = new CommonResp<>();
+        resp.setContent(jobService.selectJobByGroupId(groupId));
         return resp;
     }
 
-    @GetMapping("/list/employeeId/{jobId}")
+    /**
+     * 根据JobId获取获奖人员名单
+     * @param jobId
+     * @return
+     */
+    @GetMapping("/list/result/{jobId}")
     public CommonResp listEmployeeId(@PathVariable String jobId) {
         CommonResp<List<String>> resp = new CommonResp<>();
         resp.setContent(jobService.selectEmployeeIdsByJobId(jobId));

@@ -1,8 +1,8 @@
 package com.jerry.lottery_draw.service;
 
-import com.jerry.lottery_draw.domain.TJob;
-import com.jerry.lottery_draw.domain.TJobExample;
+import com.jerry.lottery_draw.domain.*;
 import com.jerry.lottery_draw.mapper.TJobMapper;
+import com.jerry.lottery_draw.mapper.TJobResultMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,23 +19,33 @@ public class JobService {
     @Resource
     private TJobMapper tJobMapper;
 
-    public List<String> selectJobIdsByGroupId(String groupId) {
-        return tJobMapper.getJobIds(groupId);
+    @Resource
+    private TJobResultMapper tJobResultMapper;
+
+    /**
+     * 根据groupId查询其下的所有Job信息
+     * @param groupId
+     * @return
+     */
+    public List<TJob> selectJobByGroupId(String groupId) {
+        TJobExample tJobExample = new TJobExample();
+        tJobExample.createCriteria().andGroupIdEqualTo(groupId);
+        List<TJob> tJobs = tJobMapper.selectByExample(tJobExample);
+        return tJobs;
     }
 
     /**
-     * 根据JobId获取获奖人员Id
-     *
+     * 根据JobId获取获奖人员名单
      * @param jobId
      * @return
      */
     public List<String> selectEmployeeIdsByJobId(String jobId) {
-        TJobExample tJobExample = new TJobExample();
-        tJobExample.createCriteria().andJobIdEqualTo(jobId);
-        List<TJob> tJobs = tJobMapper.selectByExample(tJobExample);
+        TJobResultExample tJobResultExample = new TJobResultExample();
+        tJobResultExample.createCriteria().andJobIdEqualTo(jobId);
+        List<TJobResult> tJobResults = tJobResultMapper.selectByExample(tJobResultExample);
         List<String> employeeIds = new ArrayList<>();
-        for (TJob tjob : tJobs) {
-            employeeIds.add(tjob.getEmployeeId());
+        for (TJobResult tJobResult : tJobResults) {
+            employeeIds.add(tJobResult.getEmployeeId());
         }
         return employeeIds;
     }
