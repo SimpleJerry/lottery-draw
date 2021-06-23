@@ -175,62 +175,52 @@ public class TJobExample {
             return (Criteria) this;
         }
 
-        public Criteria andJobIdEqualTo(String value) {
+        public Criteria andJobIdEqualTo(Long value) {
             addCriterion("job_id =", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotEqualTo(String value) {
+        public Criteria andJobIdNotEqualTo(Long value) {
             addCriterion("job_id <>", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdGreaterThan(String value) {
+        public Criteria andJobIdGreaterThan(Long value) {
             addCriterion("job_id >", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdGreaterThanOrEqualTo(String value) {
+        public Criteria andJobIdGreaterThanOrEqualTo(Long value) {
             addCriterion("job_id >=", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdLessThan(String value) {
+        public Criteria andJobIdLessThan(Long value) {
             addCriterion("job_id <", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdLessThanOrEqualTo(String value) {
+        public Criteria andJobIdLessThanOrEqualTo(Long value) {
             addCriterion("job_id <=", value, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdLike(String value) {
-            addCriterion("job_id like", value, "jobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andJobIdNotLike(String value) {
-            addCriterion("job_id not like", value, "jobId");
-            return (Criteria) this;
-        }
-
-        public Criteria andJobIdIn(List<String> values) {
+        public Criteria andJobIdIn(List<Long> values) {
             addCriterion("job_id in", values, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotIn(List<String> values) {
+        public Criteria andJobIdNotIn(List<Long> values) {
             addCriterion("job_id not in", values, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdBetween(String value1, String value2) {
+        public Criteria andJobIdBetween(Long value1, Long value2) {
             addCriterion("job_id between", value1, value2, "jobId");
             return (Criteria) this;
         }
 
-        public Criteria andJobIdNotBetween(String value1, String value2) {
+        public Criteria andJobIdNotBetween(Long value1, Long value2) {
             addCriterion("job_id not between", value1, value2, "jobId");
             return (Criteria) this;
         }

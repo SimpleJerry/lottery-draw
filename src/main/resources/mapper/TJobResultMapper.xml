@@ -3,7 +3,7 @@
 <mapper namespace="com.jerry.lottery_draw.mapper.TJobResultMapper">
   <resultMap id="BaseResultMap" type="com.jerry.lottery_draw.domain.TJobResult">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="job_id" jdbcType="VARCHAR" property="jobId" />
+    <result column="job_id" jdbcType="BIGINT" property="jobId" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
     <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
     <result column="award_id" jdbcType="VARCHAR" property="awardId" />
@@ -104,7 +104,7 @@
     insert into t_job_result (id, job_id, group_id, 
       employee_id, award_id, `time`
       )
-    values (#{id,jdbcType=BIGINT}, #{jobId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{jobId,jdbcType=BIGINT}, #{groupId,jdbcType=VARCHAR}, 
       #{employeeId,jdbcType=VARCHAR}, #{awardId,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -135,7 +135,7 @@
         #{id,jdbcType=BIGINT},
       </if>
       <if test="jobId != null">
-        #{jobId,jdbcType=VARCHAR},
+        #{jobId,jdbcType=BIGINT},
       </if>
       <if test="groupId != null">
         #{groupId,jdbcType=VARCHAR},
@@ -164,7 +164,7 @@
         id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.jobId != null">
-        job_id = #{record.jobId,jdbcType=VARCHAR},
+        job_id = #{record.jobId,jdbcType=BIGINT},
       </if>
       <if test="record.groupId != null">
         group_id = #{record.groupId,jdbcType=VARCHAR},
@@ -186,7 +186,7 @@
   <update id="updateByExample" parameterType="map">
     update t_job_result
     set id = #{record.id,jdbcType=BIGINT},
-      job_id = #{record.jobId,jdbcType=VARCHAR},
+      job_id = #{record.jobId,jdbcType=BIGINT},
       group_id = #{record.groupId,jdbcType=VARCHAR},
       employee_id = #{record.employeeId,jdbcType=VARCHAR},
       award_id = #{record.awardId,jdbcType=VARCHAR},
@@ -199,7 +199,7 @@
     update t_job_result
     <set>
       <if test="jobId != null">
-        job_id = #{jobId,jdbcType=VARCHAR},
+        job_id = #{jobId,jdbcType=BIGINT},
       </if>
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jerry.lottery_draw.domain.TJobResult">
     update t_job_result
-    set job_id = #{jobId,jdbcType=VARCHAR},
+    set job_id = #{jobId,jdbcType=BIGINT},
       group_id = #{groupId,jdbcType=VARCHAR},
       employee_id = #{employeeId,jdbcType=VARCHAR},
       award_id = #{awardId,jdbcType=VARCHAR},
