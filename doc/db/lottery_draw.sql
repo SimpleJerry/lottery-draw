@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 22/06/2021 16:35:52
+ Date: 23/06/2021 11:23:19
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `t_admin`  (
                             PRIMARY KEY (`id`) USING BTREE,
                             INDEX `group_id`(`group_id`) USING BTREE,
                             CONSTRAINT `fk_group2admin` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_admin
@@ -216,7 +216,7 @@ INSERT INTO `t_group` VALUES (2, 'G_0002', '腾讯', '2021-05-12 15:21:35', '202
 DROP TABLE IF EXISTS `t_history`;
 CREATE TABLE `t_history`  (
                               `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                              `job_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+                              `job_id` bigint(0) NOT NULL,
                               `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
                               `employee_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
                               `award_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
@@ -225,21 +225,17 @@ CREATE TABLE `t_history`  (
                               INDEX `group_id`(`group_id`) USING BTREE,
                               INDEX `award_id`(`award_id`) USING BTREE,
                               INDEX `employee_id`(`employee_id`) USING BTREE,
-                              INDEX `job_id`(`job_id`) USING BTREE,
-                              CONSTRAINT `fk_award2history` FOREIGN KEY (`award_id`) REFERENCES `t_award` (`award_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                              CONSTRAINT `fk_employee2history` FOREIGN KEY (`employee_id`) REFERENCES `t_employee` (`employee_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                              CONSTRAINT `fk_group2history` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                              CONSTRAINT `fk_job2history` FOREIGN KEY (`job_id`) REFERENCES `t_job` (`job_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+                              INDEX `job_id`(`job_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_history
 -- ----------------------------
-INSERT INTO `t_history` VALUES (11, '1394187297934675968', 'G_0001', 'E_0067', 'A_0001', '2021-06-22 16:35:34');
-INSERT INTO `t_history` VALUES (12, '1394187297934675968', 'G_0001', 'E_0002', 'A_0001', '2021-06-22 16:35:35');
-INSERT INTO `t_history` VALUES (13, '1394187297934675968', 'G_0001', 'E_0077', 'A_0001', '2021-06-22 16:35:36');
-INSERT INTO `t_history` VALUES (14, '1394187297934675968', 'G_0001', 'E_0096', 'A_0001', '2021-06-22 16:35:36');
-INSERT INTO `t_history` VALUES (15, '1394187297934675968', 'G_0001', 'E_0050', 'A_0001', '2021-06-22 16:35:45');
+INSERT INTO `t_history` VALUES (1, 1394187297934675968, 'G_0001', 'E_0067', 'A_0001', '2021-06-22 16:35:34');
+INSERT INTO `t_history` VALUES (2, 1394187297934675968, 'G_0001', 'E_0002', 'A_0001', '2021-06-22 16:35:35');
+INSERT INTO `t_history` VALUES (3, 1394187297934675968, 'G_0001', 'E_0077', 'A_0001', '2021-06-22 16:35:36');
+INSERT INTO `t_history` VALUES (4, 1394187297934675968, 'G_0001', 'E_0096', 'A_0001', '2021-06-22 16:35:36');
+INSERT INTO `t_history` VALUES (5, 1394187297934675968, 'G_0001', 'E_0050', 'A_0001', '2021-06-22 16:35:45');
 
 -- ----------------------------
 -- Table structure for t_job
@@ -247,20 +243,20 @@ INSERT INTO `t_history` VALUES (15, '1394187297934675968', 'G_0001', 'E_0050', '
 DROP TABLE IF EXISTS `t_job`;
 CREATE TABLE `t_job`  (
                           `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                          `job_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+                          `job_id` bigint(0) NOT NULL,
                           `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
                           `time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
                           PRIMARY KEY (`id`) USING BTREE,
                           INDEX `group_id`(`group_id`) USING BTREE,
                           INDEX `job_id`(`job_id`) USING BTREE,
-                          CONSTRAINT `fk_group2job` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+                          CONSTRAINT `fk_group2job` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_job
 -- ----------------------------
-INSERT INTO `t_job` VALUES (1, '1394187297934675968', 'G_0001', '2021-06-22 16:23:00');
-INSERT INTO `t_job` VALUES (2, '3279865135109358901', 'G_0001', '2021-06-22 16:34:35');
+INSERT INTO `t_job` VALUES (1, 1394187297934675968, 'G_0001', '2021-06-22 16:23:00');
+INSERT INTO `t_job` VALUES (2, 3279865135109358901, 'G_0001', '2021-06-22 16:34:35');
 
 -- ----------------------------
 -- Table structure for t_job_result
@@ -268,7 +264,7 @@ INSERT INTO `t_job` VALUES (2, '3279865135109358901', 'G_0001', '2021-06-22 16:3
 DROP TABLE IF EXISTS `t_job_result`;
 CREATE TABLE `t_job_result`  (
                                  `id` bigint(0) NOT NULL AUTO_INCREMENT,
-                                 `job_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+                                 `job_id` bigint(0) NOT NULL DEFAULT '',
                                  `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
                                  `employee_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
                                  `award_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
@@ -277,20 +273,18 @@ CREATE TABLE `t_job_result`  (
                                  INDEX `fk_group2history`(`group_id`) USING BTREE,
                                  INDEX `fk_award2history`(`award_id`) USING BTREE,
                                  INDEX `fk_employee2history`(`employee_id`) USING BTREE,
-                                 CONSTRAINT `fk_award2job_result` FOREIGN KEY (`award_id`) REFERENCES `t_award` (`award_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                                 CONSTRAINT `fk_employee2job_result` FOREIGN KEY (`employee_id`) REFERENCES `t_employee` (`employee_id`) ON DELETE SET NULL ON UPDATE CASCADE,
-                                 CONSTRAINT `fk_group2job_result` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+                                 CONSTRAINT `fk_group2job_result` FOREIGN KEY (`group_id`) REFERENCES `t_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_job_result
 -- ----------------------------
-INSERT INTO `t_job_result` VALUES (1, '1394187297934675968', 'G_0001', 'E_0067', 'A_0001', '2021-06-22 16:23:25');
-INSERT INTO `t_job_result` VALUES (2, '1394187297934675968', 'G_0001', 'E_0002', 'A_0001', '2021-06-22 16:23:28');
-INSERT INTO `t_job_result` VALUES (3, '1394187297934675968', 'G_0001', 'E_0077', 'A_0001', '2021-06-22 16:23:29');
-INSERT INTO `t_job_result` VALUES (4, '1394187297934675968', 'G_0001', 'E_0096', 'A_0001', '2021-06-22 16:23:30');
-INSERT INTO `t_job_result` VALUES (5, '1394187297934675968', 'G_0001', 'E_0050', 'A_0001', '2021-06-22 16:23:31');
-INSERT INTO `t_job_result` VALUES (6, '3279865135109358901', 'G_0001', 'E_0077', 'A_0001', '2021-06-22 16:24:29');
+INSERT INTO `t_job_result` VALUES (1, 1394187297934675968, 'G_0001', 'E_0067', 'A_0001', '2021-06-22 16:23:25');
+INSERT INTO `t_job_result` VALUES (2, 1394187297934675968, 'G_0001', 'E_0002', 'A_0001', '2021-06-22 16:23:28');
+INSERT INTO `t_job_result` VALUES (3, 1394187297934675968, 'G_0001', 'E_0077', 'A_0001', '2021-06-22 16:23:29');
+INSERT INTO `t_job_result` VALUES (4, 1394187297934675968, 'G_0001', 'E_0096', 'A_0001', '2021-06-22 16:23:30');
+INSERT INTO `t_job_result` VALUES (5, 1394187297934675968, 'G_0001', 'E_0050', 'A_0001', '2021-06-22 16:23:31');
+INSERT INTO `t_job_result` VALUES (6, 3279865135109358901, 'G_0001', 'E_0077', 'A_0001', '2021-06-22 16:24:29');
 
 -- ----------------------------
 -- Table structure for test
