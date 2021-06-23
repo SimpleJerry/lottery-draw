@@ -1,6 +1,7 @@
 package com.jerry.lottery_draw.controller;
 
 import com.jerry.lottery_draw.domain.TJob;
+import com.jerry.lottery_draw.req.LotteryDrawReq;
 import com.jerry.lottery_draw.resp.LotteryDrawResp;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.JobService;
@@ -56,13 +57,14 @@ public class JobController {
 
     /**
      * 根据JobId执行抽奖
-     * @param jobId
+     *
+     * @param req
      * @return
      */
-    @PutMapping("/draw-lottery/{jobId}")
-    public CommonResp drawLottery(@PathVariable Long jobId) {
+    @PostMapping("/draw-lottery")
+    public CommonResp drawLottery(@RequestBody LotteryDrawReq req) {
         CommonResp<LotteryDrawResp> resp = new CommonResp<>();
-        LotteryDrawResp lotteryDrawResp = jobService.drawLottery(jobId);
+        LotteryDrawResp lotteryDrawResp = jobService.drawLottery(req.getJobId());
         resp.setContent(lotteryDrawResp);
         return resp;
     }

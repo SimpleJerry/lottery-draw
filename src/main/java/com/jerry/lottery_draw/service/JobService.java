@@ -3,6 +3,8 @@ package com.jerry.lottery_draw.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Snowflake;
 import com.jerry.lottery_draw.domain.*;
+import com.jerry.lottery_draw.exception.BusinessException;
+import com.jerry.lottery_draw.exception.BusinessExceptionCode;
 import com.jerry.lottery_draw.mapper.*;
 import com.jerry.lottery_draw.resp.LotteryDrawResp;
 import org.slf4j.Logger;
@@ -93,6 +95,10 @@ public class JobService {
      */
     public TJob deleteJob(Long jobId) {
         TJob tJob = selectJobByJobId(jobId);
+        if (ObjectUtils.isEmpty(tJob)) {
+            LOG.info("jobId：{}不存在", String.valueOf(jobId));
+            throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
+        }
         tJobMapper.deleteByPrimaryKey(tJob.getId());
         return tJob;
     }
@@ -109,7 +115,11 @@ public class JobService {
 
         // 通过jobId获取award_ids
         TJob tJob = selectJobByJobId(jobId);
-        List<String> awardIds = Arrays.asList(tJob.getAwardIds().split(","));
+        if (ObjectUtils.isEmpty(tJob)) {
+            LOG.info("jobId：{}不存在", String.valueOf(jobId));
+            throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
+        }
+        List<String> awardIds = Arrays.asList("[A_0001,A_0002,A_0003,A_0004,A_0005]".replaceAll("[\\[\\]]","").split(","));
         // 根据awardIds查询所有相关奖品信息
         TAwardExample tAwardExample = new TAwardExample();
         tAwardExample.createCriteria().andAwardIdIn(awardIds);
@@ -132,7 +142,7 @@ public class JobService {
                 Integer drawQuantity = (tAward.getRemainQuantity() < tAward.getOnceQuantity()) ? tAward.getRemainQuantity() : tAward.getOnceQuantity();
                 List<TEmployee> selectedEmployees = randomEleList(notSelectedEmployees, drawQuantity);
                 // 填充剩余字段
-                lotteryDrawResp.setRemainQuantity(tAward.getRemainQuantity());
+                lotteryDrawResp.setRemainQuantity(tAward.getRemainQuantity() - drawQuantity);
                 lotteryDrawResp.setUserList(selectedEmployees);
                 LOG.info("返回体已构造完毕");
                 // 保存对tAward的更改
