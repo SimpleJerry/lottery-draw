@@ -5,6 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="job_id" jdbcType="BIGINT" property="jobId" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
+    <result column="award_ids" jdbcType="VARCHAR" property="awardIds" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, job_id, group_id, `time`
+    id, job_id, group_id, award_ids, `time`
   </sql>
   <select id="selectByExample" parameterType="com.jerry.lottery_draw.domain.TJobExample" resultMap="BaseResultMap">
     select
@@ -100,9 +101,9 @@
   </delete>
   <insert id="insert" parameterType="com.jerry.lottery_draw.domain.TJob">
     insert into t_job (id, job_id, group_id, 
-      `time`)
+      award_ids, `time`)
     values (#{id,jdbcType=BIGINT}, #{jobId,jdbcType=BIGINT}, #{groupId,jdbcType=VARCHAR}, 
-      #{time,jdbcType=TIMESTAMP})
+      #{awardIds,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.jerry.lottery_draw.domain.TJob">
     insert into t_job
@@ -115,6 +116,9 @@
       </if>
       <if test="groupId != null">
         group_id,
+      </if>
+      <if test="awardIds != null">
+        award_ids,
       </if>
       <if test="time != null">
         `time`,
@@ -129,6 +133,9 @@
       </if>
       <if test="groupId != null">
         #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="awardIds != null">
+        #{awardIds,jdbcType=VARCHAR},
       </if>
       <if test="time != null">
         #{time,jdbcType=TIMESTAMP},
@@ -153,6 +160,9 @@
       <if test="record.groupId != null">
         group_id = #{record.groupId,jdbcType=VARCHAR},
       </if>
+      <if test="record.awardIds != null">
+        award_ids = #{record.awardIds,jdbcType=VARCHAR},
+      </if>
       <if test="record.time != null">
         `time` = #{record.time,jdbcType=TIMESTAMP},
       </if>
@@ -166,6 +176,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       job_id = #{record.jobId,jdbcType=BIGINT},
       group_id = #{record.groupId,jdbcType=VARCHAR},
+      award_ids = #{record.awardIds,jdbcType=VARCHAR},
       `time` = #{record.time,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -180,6 +191,9 @@
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=VARCHAR},
       </if>
+      <if test="awardIds != null">
+        award_ids = #{awardIds,jdbcType=VARCHAR},
+      </if>
       <if test="time != null">
         `time` = #{time,jdbcType=TIMESTAMP},
       </if>
@@ -190,6 +204,7 @@
     update t_job
     set job_id = #{jobId,jdbcType=BIGINT},
       group_id = #{groupId,jdbcType=VARCHAR},
+      award_ids = #{awardIds,jdbcType=VARCHAR},
       `time` = #{time,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>

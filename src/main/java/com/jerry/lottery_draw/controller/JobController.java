@@ -1,6 +1,8 @@
 package com.jerry.lottery_draw.controller;
 
 import com.jerry.lottery_draw.domain.TJob;
+import com.jerry.lottery_draw.req.AwardLotteryDrawReq;
+import com.jerry.lottery_draw.resp.AwardLotteryDrawResp;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.JobService;
 import org.springframework.web.bind.annotation.*;
@@ -47,11 +49,19 @@ public class JobController {
      * @param jobId
      */
     @DeleteMapping("/delete/{jobId}")
-    public CommonResp add(@PathVariable Long jobId) {
+    public CommonResp delete(@PathVariable Long jobId) {
         CommonResp<TJob> resp = new CommonResp<>();
         resp.setContent(jobService.deleteJob(jobId));
         return resp;
     }
+
+    // @PutMapping("/draw-lottery/{jobId}")
+    // public CommonResp drawLottery(@PathVariable Long jobId) {
+    //     CommonResp<AwardLotteryDrawResp> resp = new CommonResp<>();
+    //     AwardLotteryDrawResp awardLotteryDrawResp = jobService.drawLottery(jobId);
+    //     resp.setContent(awardLotteryDrawResp);
+    //     return resp;
+    // }
 
     /**
      * 根据JobId获取获奖人员名单

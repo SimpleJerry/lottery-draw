@@ -9,6 +9,8 @@ public class TJob {
 
     private String groupId;
 
+    private String awardIds;
+
     private Date time;
 
     public Long getId() {
@@ -35,6 +37,14 @@ public class TJob {
         this.groupId = groupId;
     }
 
+    public String getAwardIds() {
+        return awardIds;
+    }
+
+    public void setAwardIds(String awardIds) {
+        this.awardIds = awardIds;
+    }
+
     public Date getTime() {
         return time;
     }
@@ -52,6 +62,7 @@ public class TJob {
         sb.append(", id=").append(id);
         sb.append(", jobId=").append(jobId);
         sb.append(", groupId=").append(groupId);
+        sb.append(", awardIds=").append(awardIds);
         sb.append(", time=").append(time);
         sb.append("]");
         return sb.toString();

@@ -295,6 +295,76 @@ public class TJobExample {
             return (Criteria) this;
         }
 
+        public Criteria andAwardIdsIsNull() {
+            addCriterion("award_ids is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsIsNotNull() {
+            addCriterion("award_ids is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsEqualTo(String value) {
+            addCriterion("award_ids =", value, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsNotEqualTo(String value) {
+            addCriterion("award_ids <>", value, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsGreaterThan(String value) {
+            addCriterion("award_ids >", value, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsGreaterThanOrEqualTo(String value) {
+            addCriterion("award_ids >=", value, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsLessThan(String value) {
+            addCriterion("award_ids <", value, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsLessThanOrEqualTo(String value) {
+            addCriterion("award_ids <=", value, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsLike(String value) {
+            addCriterion("award_ids like", value, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsNotLike(String value) {
+            addCriterion("award_ids not like", value, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsIn(List<String> values) {
+            addCriterion("award_ids in", values, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsNotIn(List<String> values) {
+            addCriterion("award_ids not in", values, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsBetween(String value1, String value2) {
+            addCriterion("award_ids between", value1, value2, "awardIds");
+            return (Criteria) this;
+        }
+
+        public Criteria andAwardIdsNotBetween(String value1, String value2) {
+            addCriterion("award_ids not between", value1, value2, "awardIds");
+            return (Criteria) this;
+        }
+
         public Criteria andTimeIsNull() {
             addCriterion("`time` is null");
             return (Criteria) this;

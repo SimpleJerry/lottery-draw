@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 23/06/2021 11:23:19
+ Date: 23/06/2021 15:05:56
 */
 
 SET NAMES utf8mb4;
@@ -244,7 +244,8 @@ DROP TABLE IF EXISTS `t_job`;
 CREATE TABLE `t_job`  (
                           `id` bigint(0) NOT NULL AUTO_INCREMENT,
                           `job_id` bigint(0) NOT NULL,
-                          `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '',
+                          `group_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+                          `award_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
                           `time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
                           PRIMARY KEY (`id`) USING BTREE,
                           INDEX `group_id`(`group_id`) USING BTREE,
@@ -255,8 +256,9 @@ CREATE TABLE `t_job`  (
 -- ----------------------------
 -- Records of t_job
 -- ----------------------------
-INSERT INTO `t_job` VALUES (1, 1394187297934675968, 'G_0001', '2021-06-22 16:23:00');
-INSERT INTO `t_job` VALUES (2, 3279865135109358901, 'G_0001', '2021-06-22 16:34:35');
+INSERT INTO `t_job` VALUES (1, 1394187297934675968, 'G_0001', '[A_0001,A_0002,A_0003,A_0004,A_0005]', '2021-06-23 15:05:25');
+INSERT INTO `t_job` VALUES (2, 3279865135109358901, 'G_0001', '[A_0001,A_0002,A_0003,A_0004,A_0005]', '2021-06-23 15:05:26');
+INSERT INTO `t_job` VALUES (3, 62746991926579200, 'G_0001', '[A_0001,A_0002,A_0003,A_0004,A_0005]', '2021-06-23 15:05:27');
 
 -- ----------------------------
 -- Table structure for t_job_result
