@@ -4,7 +4,7 @@ import com.jerry.lottery_draw.domain.TEmployee;
 
 import java.util.List;
 
-public class AwardLotteryDrawResp {
+public class LotteryDrawResp {
     private String awardId;
 
     private String groupId;
@@ -47,7 +47,7 @@ public class AwardLotteryDrawResp {
 
     @Override
     public String toString() {
-        return "AwardLotteryDrawResp{" +
+        return "LotteryDrawResp{" +
                 "awardId='" + awardId + '\'' +
                 ", groupId='" + groupId + '\'' +
                 ", remainQuantity=" + remainQuantity +

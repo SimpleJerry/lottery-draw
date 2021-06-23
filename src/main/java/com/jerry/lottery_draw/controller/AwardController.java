@@ -1,11 +1,12 @@
 package com.jerry.lottery_draw.controller;
 
 import com.jerry.lottery_draw.domain.TAward;
-import com.jerry.lottery_draw.req.AwardLotteryDrawReq;
-import com.jerry.lottery_draw.resp.AwardLotteryDrawResp;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.AwardService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,14 +31,6 @@ public class AwardController {
         CommonResp<TAward> resp = new CommonResp<>();
         TAward award = awardService.selectAwardByAwardId(awardId);
         resp.setContent(award);
-        return resp;
-    }
-
-    @PostMapping("/lottery-draw")
-    public CommonResp drawLottery(@RequestBody AwardLotteryDrawReq awardLoginReq) {
-        CommonResp<AwardLotteryDrawResp> resp = new CommonResp<>();
-        AwardLotteryDrawResp awardLotteryDrawResp = awardService.drawLottery(awardLoginReq);
-        resp.setContent(awardLotteryDrawResp);
         return resp;
     }
 }
