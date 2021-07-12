@@ -2,10 +2,10 @@ package com.jerry.lottery_draw.controller;
 
 import com.jerry.lottery_draw.req.JobCreateReq;
 import com.jerry.lottery_draw.req.JobQueryReq;
-import com.jerry.lottery_draw.req.LotteryDrawReq;
+import com.jerry.lottery_draw.req.JobDoReq;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.resp.JobQueryResp;
-import com.jerry.lottery_draw.resp.LotteryDrawResp;
+import com.jerry.lottery_draw.resp.JobDoResp;
 import com.jerry.lottery_draw.service.JobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,16 +72,16 @@ public class JobController {
     }
 
     /**
-     * 根据JobId执行抽奖
+     * 进行抽奖事务
      *
-     * @param req LotteryDrawReq
-     * @return LotteryDrawResp
+     * @param req JobDoReq
+     * @return JobDoResp
      */
-    @PostMapping("/draw-lottery")
-    public CommonResp<LotteryDrawResp> drawLottery(@RequestBody LotteryDrawReq req) {
-        CommonResp<LotteryDrawResp> resp = new CommonResp<>();
-        LotteryDrawResp lotteryDrawResp = jobService.drawLottery(req.getJobId());
-        resp.setContent(lotteryDrawResp);
+    @PostMapping("/{jobId}/do")
+    public CommonResp<JobDoResp> doJob(@PathVariable Long jobId, @RequestBody JobDoReq req) {
+        CommonResp<JobDoResp> resp = new CommonResp<>();
+        JobDoResp jobDoResp = jobService.doJob(req.getJobId());
+        resp.setContent(jobDoResp);
         return resp;
     }
 

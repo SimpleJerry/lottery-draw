@@ -8,8 +8,8 @@ import com.jerry.lottery_draw.exception.BusinessExceptionCode;
 import com.jerry.lottery_draw.mapper.*;
 import com.jerry.lottery_draw.req.JobCreateReq;
 import com.jerry.lottery_draw.req.JobQueryReq;
+import com.jerry.lottery_draw.resp.JobDoResp;
 import com.jerry.lottery_draw.resp.JobQueryResp;
-import com.jerry.lottery_draw.resp.LotteryDrawResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -136,11 +136,11 @@ public class JobService {
      * 运行Job
      *
      * @param jobId Long
-     * @return LotteryDrawResp
+     * @return JobDoResp
      */
-    public LotteryDrawResp drawLottery(Long jobId) {
-        //  构造返回体：LotteryDrawResp-接下来需要分别填充awardId,groupId,remainQuantity和userList
-        LotteryDrawResp lotteryDrawResp = new LotteryDrawResp();
+    public JobDoResp doJob(Long jobId) {
+        //  构造返回体：JobDoResp-接下来需要分别填充awardId,groupId,remainQuantity和userList
+        JobDoResp jobDoResp = new JobDoResp();
 
         // 通过jobId获取award_ids
         TJob tJob = selectJobByJobId(jobId);
@@ -160,8 +160,8 @@ public class JobService {
                 continue;
             }
             else {
-                lotteryDrawResp.setAwardId(tAward.getAwardId());
-                lotteryDrawResp.setGroupId(tAward.getGroupId());
+                jobDoResp.setAwardId(tAward.getAwardId());
+                jobDoResp.setGroupId(tAward.getGroupId());
                 // 根据jobId获取中过奖的EmployeeIds，并获取没中过奖的TEmployee
                 List<String> selectedEmployeeIds = selectEmployeeIdsByJobId(jobId);
                 TEmployeeExample tEmployeeExample = new TEmployeeExample();
@@ -171,8 +171,8 @@ public class JobService {
                 Integer drawQuantity = (tAward.getRemainQuantity() < tAward.getOnceQuantity()) ? tAward.getRemainQuantity() : tAward.getOnceQuantity();
                 List<TEmployee> selectedEmployees = randomEleList(notSelectedEmployees, drawQuantity);
                 // 填充剩余字段
-                lotteryDrawResp.setRemainQuantity(tAward.getRemainQuantity() - drawQuantity);
-                lotteryDrawResp.setUserList(selectedEmployees);
+                jobDoResp.setRemainQuantity(tAward.getRemainQuantity() - drawQuantity);
+                jobDoResp.setUserList(selectedEmployees);
                 log.info("返回体已构造完毕");
                 // 保存对tAward的更改
                 tAward.setRemainQuantity(tAward.getRemainQuantity() - drawQuantity);
@@ -195,7 +195,7 @@ public class JobService {
             }
         }
 
-        return lotteryDrawResp;
+        return jobDoResp;
     }
 
     /**

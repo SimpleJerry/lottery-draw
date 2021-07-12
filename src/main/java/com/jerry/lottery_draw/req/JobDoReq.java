@@ -2,7 +2,7 @@ package com.jerry.lottery_draw.req;
 
 import javax.validation.constraints.NotEmpty;
 
-public class LotteryDrawReq {
+public class JobDoReq {
 
     @NotEmpty(message = "【jobId】不能为空")
     private Long jobId;
@@ -17,7 +17,7 @@ public class LotteryDrawReq {
 
     @Override
     public String toString() {
-        return "LotteryDrawReq{" +
+        return "JobDoReq{" +
                 "jobId=" + jobId +
                 '}';
     }
