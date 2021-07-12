@@ -2,6 +2,7 @@ package com.jerry.lottery_draw.controller;
 
 import com.jerry.lottery_draw.req.AwardAddReq;
 import com.jerry.lottery_draw.req.AwardQueryReq;
+import com.jerry.lottery_draw.req.AwardUpdateReq;
 import com.jerry.lottery_draw.resp.AwardQueryResp;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.AwardService;
@@ -34,7 +35,7 @@ public class AwardController {
     /**
      * 根据Id查询单个奖品
      *
-     * @param awardId 奖品Id
+     * @param awardId String
      * @return AwardQueryResp
      */
     @GetMapping("/{awardId}")
@@ -61,13 +62,27 @@ public class AwardController {
     /**
      * 删除奖品
      *
-     * @param awardId 奖品Id
+     * @param awardId String
      * @return null
      */
     @DeleteMapping("/{awardId}")
     public CommonResp<Object> delete(@PathVariable String awardId) {
         CommonResp<Object> resp = new CommonResp<>();
         awardService.delete(awardId);
+        return resp;
+    }
+
+    /**
+     * 更新奖品
+     *
+     * @param awardId String
+     * @param req     AwardUpdateReq
+     * @return
+     */
+    @PutMapping("/{awardId}")
+    public CommonResp<Object> update(@PathVariable String awardId, @RequestBody AwardUpdateReq req) {
+        CommonResp<Object> resp = new CommonResp<>();
+        awardService.update(awardId, req);
         return resp;
     }
 }

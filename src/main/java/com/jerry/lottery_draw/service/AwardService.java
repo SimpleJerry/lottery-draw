@@ -9,6 +9,7 @@ import com.jerry.lottery_draw.exception.BusinessExceptionCode;
 import com.jerry.lottery_draw.mapper.TAwardMapper;
 import com.jerry.lottery_draw.req.AwardAddReq;
 import com.jerry.lottery_draw.req.AwardQueryReq;
+import com.jerry.lottery_draw.req.AwardUpdateReq;
 import com.jerry.lottery_draw.resp.AwardQueryResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -116,6 +118,24 @@ public class AwardService {
         }
         // 执行删除
         tAwardMapper.deleteByPrimaryKey(tAward.getId());
+    }
+
+    /**
+     * 更新奖品
+     *
+     * @param awardId String
+     * @param req AwardUpdateReq
+     */
+    public void update(String awardId, AwardUpdateReq req) {
+        TAward tAward = selectAwardById(awardId);
+        if (ObjectUtil.isEmpty(tAward)) {
+            log.info("奖品不存在：{}", awardId);
+            throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
+        }
+        BeanUtils.copyProperties(req, tAward);
+        tAward.setUpdatedAt(new Date());
+        // 执行更新
+        tAwardMapper.updateByPrimaryKeySelective(tAward);
     }
 
 }
