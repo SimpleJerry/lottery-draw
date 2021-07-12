@@ -3,66 +3,64 @@ package com.jerry.lottery_draw.service;
 import com.jerry.lottery_draw.domain.TAward;
 import com.jerry.lottery_draw.domain.TAwardExample;
 import com.jerry.lottery_draw.mapper.TAwardMapper;
-import com.jerry.lottery_draw.mapper.TEmployeeMapper;
-import com.jerry.lottery_draw.mapper.THistoryMapper;
-import com.jerry.lottery_draw.mapper.TJobMapper;
+import com.jerry.lottery_draw.resp.AwardQueryRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AwardService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AwardService.class);
+    private static final Logger log = LoggerFactory.getLogger(AwardService.class);
 
     @Resource
     private TAwardMapper tAwardMapper;
 
-    @Resource
-    private JobService jobService;
-
-    @Resource
-    private TEmployeeMapper tEmployeeMapper;
-
-    @Resource
-    private TJobMapper tJobMapper;
-
-    @Resource
-    private THistoryMapper tHistoryMapper;
+    /**
+     * 查询全部奖品
+     *
+     * @param groupId
+     * @return
+     */
+    public List<AwardQueryRes> list(String groupId) {
+        TAwardExample tAwardExample = new TAwardExample();
+        tAwardExample.createCriteria().andGroupIdEqualTo(groupId);
+        List<TAward> awardList = tAwardMapper.selectByExample(tAwardExample);
+        // Bean转换
+        List<AwardQueryRes> res = new ArrayList<>();
+        for (TAward award : awardList) {
+            AwardQueryRes resItem = new AwardQueryRes();
+            BeanUtils.copyProperties(award, resItem);
+            res.add(resItem);
+        }
+        return res;
+    }
 
     /**
-     * 根据awardId查询某奖品种类信息
+     * 查询单个奖品
      *
+     * @param groupId
      * @param awardId
      * @return
      */
-    public TAward selectAwardByAwardId(String awardId) {
+    public AwardQueryRes query(String groupId, String awardId) {
         TAwardExample tAwardExample = new TAwardExample();
-        tAwardExample.createCriteria().andAwardIdEqualTo(awardId);
+        tAwardExample.createCriteria().andGroupIdEqualTo(groupId).andAwardIdEqualTo(awardId);
         List<TAward> awardList = tAwardMapper.selectByExample(tAwardExample);
         if (CollectionUtils.isEmpty(awardList)) {
             return null;
         }
         else {
-            return awardList.get(0);
+            AwardQueryRes res = new AwardQueryRes();
+            BeanUtils.copyProperties(awardList.get(0), res);
+            return res;
         }
-    }
-
-    /**
-     * 根据groupId查询其下所有奖品种类
-     *
-     * @param groupId
-     * @return
-     */
-    public List<TAward> selectAwardsByGroupId(String groupId) {
-        TAwardExample tAwardExample = new TAwardExample();
-        tAwardExample.createCriteria().andGroupIdEqualTo(groupId);
-        List<TAward> awardList = tAwardMapper.selectByExample(tAwardExample);
-        return awardList;
     }
 
 }

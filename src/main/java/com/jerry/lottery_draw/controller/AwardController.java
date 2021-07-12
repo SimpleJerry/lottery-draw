@@ -1,6 +1,6 @@
 package com.jerry.lottery_draw.controller;
 
-import com.jerry.lottery_draw.domain.TAward;
+import com.jerry.lottery_draw.resp.AwardQueryRes;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.AwardService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,19 +18,32 @@ public class AwardController {
     @Resource
     private AwardService awardService;
 
-    @GetMapping("/show-all/{groupId}")
-    public CommonResp showAll(@PathVariable("groupId") String groupId){
-        CommonResp<List<TAward>> resp = new CommonResp<>();
-        List<TAward> awardList = awardService.selectAwardsByGroupId(groupId);
+    /**
+     * 查询全部奖品
+     *
+     * @param groupId
+     * @return
+     */
+    @GetMapping("/{groupId}")
+    public CommonResp list(@PathVariable String groupId) {
+        CommonResp<List<AwardQueryRes>> resp = new CommonResp<>();
+        List<AwardQueryRes> awardList = awardService.list(groupId);
         resp.setContent(awardList);
         return resp;
     }
 
-    @GetMapping("/show-one/{awardId}")
-    public CommonResp showOne(@PathVariable("awardId") String awardId){
-        CommonResp<TAward> resp = new CommonResp<>();
-        TAward award = awardService.selectAwardByAwardId(awardId);
-        resp.setContent(award);
+    /**
+     * 查询单个奖品
+     *
+     * @param groupId
+     * @param awardId
+     * @return
+     */
+    @GetMapping("/{groupId}/{awardId}")
+    public CommonResp<AwardQueryRes> query(@PathVariable String groupId, @PathVariable String awardId) {
+        CommonResp<AwardQueryRes> resp = new CommonResp<>();
+        AwardQueryRes res = awardService.query(groupId, awardId);
+        resp.setContent(res);
         return resp;
     }
 }
