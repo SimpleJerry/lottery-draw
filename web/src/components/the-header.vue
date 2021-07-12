@@ -8,6 +8,9 @@
       <a-menu-item key="/award">
         <router-link to="/award">奖项管理</router-link>
       </a-menu-item>
+      <a-menu-item key="/job">
+        <router-link to="/job">抽奖管理</router-link>
+      </a-menu-item>
       <a-menu-item key="/about">
         <router-link to="/about">关于我们</router-link>
       </a-menu-item>
