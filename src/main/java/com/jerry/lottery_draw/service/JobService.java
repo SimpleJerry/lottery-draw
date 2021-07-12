@@ -26,7 +26,7 @@ import static cn.hutool.core.util.RandomUtil.randomEleList;
 @Service
 public class JobService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(JobService.class);
+    private static final Logger log = LoggerFactory.getLogger(JobService.class);
 
     @Resource
     private TJobMapper tJobMapper;
@@ -46,8 +46,8 @@ public class JobService {
     /**
      * 辅助函数：根据JobId寻找Job
      *
-     * @param jobId
-     * @return
+     * @param jobId Long
+     * @return TJob
      */
     public TJob selectJobByJobId(Long jobId) {
         TJobExample tJobExample = new TJobExample();
@@ -64,8 +64,8 @@ public class JobService {
     /**
      * 查询Job
      *
-     * @param req
-     * @return
+     * @param req JobQueryReq
+     * @return List<JobQueryResp>
      */
     public List<JobQueryResp> list(JobQueryReq req) {
         TJobExample tJobExample = new TJobExample();
@@ -86,8 +86,8 @@ public class JobService {
     /**
      * 根据JobId查询Job
      *
-     * @param jobId
-     * @return
+     * @param jobId Long
+     * @return JobQueryResp
      */
     public JobQueryResp query(Long jobId) {
         TJob tJob = selectJobByJobId(jobId);
@@ -106,8 +106,7 @@ public class JobService {
     /**
      * 创建Job
      *
-     * @param req
-     * @return
+     * @param req JobCreateReq
      */
     public void create(JobCreateReq req) {
         // 创建job
@@ -122,12 +121,12 @@ public class JobService {
     /**
      * 删除Job
      *
-     * @param jobId
+     * @param jobId Long
      */
     public void delete(Long jobId) {
         TJob tJob = selectJobByJobId(jobId);
         if (ObjectUtils.isEmpty(tJob)) {
-            LOG.info("事务不存在：{}", jobId);
+            log.info("事务不存在：{}", jobId);
             throw new BusinessException(BusinessExceptionCode.JOB_NOT_EXISTS);
         }
         tJobMapper.deleteByPrimaryKey(tJob.getId());
@@ -136,8 +135,8 @@ public class JobService {
     /**
      * 运行Job
      *
-     * @param jobId
-     * @return
+     * @param jobId Long
+     * @return LotteryDrawResp
      */
     public LotteryDrawResp drawLottery(Long jobId) {
         //  构造返回体：LotteryDrawResp-接下来需要分别填充awardId,groupId,remainQuantity和userList
@@ -146,7 +145,7 @@ public class JobService {
         // 通过jobId获取award_ids
         TJob tJob = selectJobByJobId(jobId);
         if (ObjectUtils.isEmpty(tJob)) {
-            LOG.info("jobId：{}不存在", String.valueOf(jobId));
+            log.info("jobId：{}不存在", jobId);
             throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
         }
         List<String> awardIds = Arrays.asList("[A_0001,A_0002,A_0003,A_0004,A_0005]".replaceAll("[\\[\\]]", "").split(","));
@@ -174,7 +173,7 @@ public class JobService {
                 // 填充剩余字段
                 lotteryDrawResp.setRemainQuantity(tAward.getRemainQuantity() - drawQuantity);
                 lotteryDrawResp.setUserList(selectedEmployees);
-                LOG.info("返回体已构造完毕");
+                log.info("返回体已构造完毕");
                 // 保存对tAward的更改
                 tAward.setRemainQuantity(tAward.getRemainQuantity() - drawQuantity);
                 tAwardMapper.updateByPrimaryKey(tAward);
@@ -202,8 +201,8 @@ public class JobService {
     /**
      * 根据JobId获取获奖人员名单
      *
-     * @param jobId
-     * @return
+     * @param jobId Long
+     * @return List<String>
      */
     public List<String> selectEmployeeIdsByJobId(Long jobId) {
         TJobResultExample tJobResultExample = new TJobResultExample();

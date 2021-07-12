@@ -1,12 +1,11 @@
 package com.jerry.lottery_draw.controller;
 
-import com.jerry.lottery_draw.domain.TJob;
 import com.jerry.lottery_draw.req.JobCreateReq;
 import com.jerry.lottery_draw.req.JobQueryReq;
 import com.jerry.lottery_draw.req.LotteryDrawReq;
+import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.resp.JobQueryResp;
 import com.jerry.lottery_draw.resp.LotteryDrawResp;
-import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.JobService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +22,8 @@ public class JobController {
     /**
      * 查询Job列表
      *
-     * @param req
-     * @return
+     * @param req JobQueryReq
+     * @return List<JobQueryResp>
      */
     @GetMapping("/")
     public CommonResp<List<JobQueryResp>> list(@RequestBody JobQueryReq req) {
@@ -36,11 +35,11 @@ public class JobController {
     /**
      * 根据JobId查询Job
      *
-     * @param jobId
-     * @return
+     * @param jobId Long
+     * @return JobQueryResp
      */
     @GetMapping("/{jobId}")
-    public CommonResp list(@PathVariable Long jobId) {
+    public CommonResp<JobQueryResp> list(@PathVariable Long jobId) {
         CommonResp<JobQueryResp> resp = new CommonResp<>();
         resp.setContent(jobService.query(jobId));
         return resp;
@@ -49,12 +48,12 @@ public class JobController {
     /**
      * 创建Job
      *
-     * @param req
-     * @return
+     * @param req JobCreateReq
+     * @return null
      */
     @PostMapping("/")
-    public CommonResp create(@RequestBody JobCreateReq req) {
-        CommonResp<TJob> resp = new CommonResp<>();
+    public CommonResp<Object> create(@RequestBody JobCreateReq req) {
+        CommonResp<Object> resp = new CommonResp<>();
         jobService.create(req);
         return resp;
     }
@@ -62,11 +61,12 @@ public class JobController {
     /**
      * 删除Job
      *
-     * @param jobId
+     * @param jobId Long
+     * @return null
      */
     @DeleteMapping("/{jobId}")
-    public CommonResp delete(@PathVariable Long jobId) {
-        CommonResp<TJob> resp = new CommonResp<>();
+    public CommonResp<Object> delete(@PathVariable Long jobId) {
+        CommonResp<Object> resp = new CommonResp<>();
         jobService.delete(jobId);
         return resp;
     }
@@ -74,11 +74,11 @@ public class JobController {
     /**
      * 根据JobId执行抽奖
      *
-     * @param req
-     * @return
+     * @param req LotteryDrawReq
+     * @return LotteryDrawResp
      */
     @PostMapping("/draw-lottery")
-    public CommonResp drawLottery(@RequestBody LotteryDrawReq req) {
+    public CommonResp<LotteryDrawResp> drawLottery(@RequestBody LotteryDrawReq req) {
         CommonResp<LotteryDrawResp> resp = new CommonResp<>();
         LotteryDrawResp lotteryDrawResp = jobService.drawLottery(req.getJobId());
         resp.setContent(lotteryDrawResp);
@@ -88,11 +88,11 @@ public class JobController {
     /**
      * 根据JobId获取获奖人员名单
      *
-     * @param jobId
-     * @return
+     * @param jobId Long
+     * @return List<String>
      */
     @GetMapping("/list/result/{jobId}")
-    public CommonResp listEmployeeId(@PathVariable Long jobId) {
+    public CommonResp<List<String>> listEmployeeId(@PathVariable Long jobId) {
         CommonResp<List<String>> resp = new CommonResp<>();
         resp.setContent(jobService.selectEmployeeIdsByJobId(jobId));
         return resp;
