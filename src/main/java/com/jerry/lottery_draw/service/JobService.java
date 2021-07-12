@@ -6,9 +6,13 @@ import com.jerry.lottery_draw.domain.*;
 import com.jerry.lottery_draw.exception.BusinessException;
 import com.jerry.lottery_draw.exception.BusinessExceptionCode;
 import com.jerry.lottery_draw.mapper.*;
+import com.jerry.lottery_draw.req.JobCreateReq;
+import com.jerry.lottery_draw.req.JobQueryReq;
+import com.jerry.lottery_draw.resp.JobQueryResp;
 import com.jerry.lottery_draw.resp.LotteryDrawResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -58,53 +62,79 @@ public class JobService {
     }
 
     /**
-     * 根据groupId查询其下的所有Job信息
+     * 查询Job
      *
-     * @param groupId
+     * @param req
      * @return
      */
-    public List<TJob> listJob(String groupId) {
+    public List<JobQueryResp> list(JobQueryReq req) {
         TJobExample tJobExample = new TJobExample();
-        tJobExample.createCriteria().andGroupIdEqualTo(groupId);
+        tJobExample.createCriteria()
+                .andJobIdEqualTo(req.getJobId())
+                .andGroupIdEqualTo(req.getGroupId());
         List<TJob> tJobs = tJobMapper.selectByExample(tJobExample);
-        return tJobs;
+        // Bean转换
+        List<JobQueryResp> res = new ArrayList<>();
+        for (TJob job : tJobs) {
+            JobQueryResp resItem = new JobQueryResp();
+            BeanUtils.copyProperties(job, resItem);
+            res.add(resItem);
+        }
+        return res;
     }
 
     /**
-     * 在某企业下新增一个Job
+     * 根据JobId查询Job
      *
-     * @param groupId
+     * @param jobId
      * @return
      */
-    public TJob createJob(String groupId) {
+    public JobQueryResp query(Long jobId) {
+        TJob tJob = selectJobByJobId(jobId);
+        if (ObjectUtils.isEmpty(tJob)) {
+            // Job不存在
+            return null;
+        }
+        else {
+            // Job存在
+            JobQueryResp res = new JobQueryResp();
+            BeanUtils.copyProperties(tJob, res);
+            return res;
+        }
+    }
+
+    /**
+     * 创建Job
+     *
+     * @param req
+     * @return
+     */
+    public void create(JobCreateReq req) {
         // 创建job
         TJob tJob = new TJob();
         tJob.setJobId(new Snowflake(1, 1).nextId());
-        tJob.setGroupId(groupId);
+        tJob.setGroupId(req.getGroupId());
         tJob.setAwardIds("[]");
         // 插入数据库
         tJobMapper.insertSelective(tJob);
-        // 再通过JobId从数据库中查询信息
-        return selectJobByJobId(tJob.getJobId());
     }
 
     /**
-     * 通过jobId删除Job
+     * 删除Job
      *
      * @param jobId
      */
-    public TJob deleteJob(Long jobId) {
+    public void delete(Long jobId) {
         TJob tJob = selectJobByJobId(jobId);
         if (ObjectUtils.isEmpty(tJob)) {
-            LOG.info("jobId：{}不存在", String.valueOf(jobId));
-            throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
+            LOG.info("事务不存在：{}", jobId);
+            throw new BusinessException(BusinessExceptionCode.JOB_NOT_EXISTS);
         }
         tJobMapper.deleteByPrimaryKey(tJob.getId());
-        return tJob;
     }
 
     /**
-     * 根据jobId进行抽奖
+     * 运行Job
      *
      * @param jobId
      * @return
@@ -119,7 +149,7 @@ public class JobService {
             LOG.info("jobId：{}不存在", String.valueOf(jobId));
             throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
         }
-        List<String> awardIds = Arrays.asList("[A_0001,A_0002,A_0003,A_0004,A_0005]".replaceAll("[\\[\\]]","").split(","));
+        List<String> awardIds = Arrays.asList("[A_0001,A_0002,A_0003,A_0004,A_0005]".replaceAll("[\\[\\]]", "").split(","));
         // 根据awardIds查询所有相关奖品信息
         TAwardExample tAwardExample = new TAwardExample();
         tAwardExample.createCriteria().andAwardIdIn(awardIds);

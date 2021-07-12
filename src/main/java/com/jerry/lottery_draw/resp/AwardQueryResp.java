@@ -3,7 +3,7 @@ package com.jerry.lottery_draw.resp;
 import lombok.Data;
 
 @Data
-public class AwardQueryRes {
+public class AwardQueryResp {
 
     private String awardId;
 

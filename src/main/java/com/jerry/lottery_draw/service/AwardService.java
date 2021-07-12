@@ -3,7 +3,7 @@ package com.jerry.lottery_draw.service;
 import com.jerry.lottery_draw.domain.TAward;
 import com.jerry.lottery_draw.domain.TAwardExample;
 import com.jerry.lottery_draw.mapper.TAwardMapper;
-import com.jerry.lottery_draw.resp.AwardQueryRes;
+import com.jerry.lottery_draw.resp.AwardQueryResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,14 +28,14 @@ public class AwardService {
      * @param groupId
      * @return
      */
-    public List<AwardQueryRes> list(String groupId) {
+    public List<AwardQueryResp> list(String groupId) {
         TAwardExample tAwardExample = new TAwardExample();
         tAwardExample.createCriteria().andGroupIdEqualTo(groupId);
         List<TAward> awardList = tAwardMapper.selectByExample(tAwardExample);
         // Bean转换
-        List<AwardQueryRes> res = new ArrayList<>();
+        List<AwardQueryResp> res = new ArrayList<>();
         for (TAward award : awardList) {
-            AwardQueryRes resItem = new AwardQueryRes();
+            AwardQueryResp resItem = new AwardQueryResp();
             BeanUtils.copyProperties(award, resItem);
             res.add(resItem);
         }
@@ -49,7 +49,7 @@ public class AwardService {
      * @param awardId
      * @return
      */
-    public AwardQueryRes query(String groupId, String awardId) {
+    public AwardQueryResp query(String groupId, String awardId) {
         TAwardExample tAwardExample = new TAwardExample();
         tAwardExample.createCriteria().andGroupIdEqualTo(groupId).andAwardIdEqualTo(awardId);
         List<TAward> awardList = tAwardMapper.selectByExample(tAwardExample);
@@ -57,7 +57,7 @@ public class AwardService {
             return null;
         }
         else {
-            AwardQueryRes res = new AwardQueryRes();
+            AwardQueryResp res = new AwardQueryResp();
             BeanUtils.copyProperties(awardList.get(0), res);
             return res;
         }

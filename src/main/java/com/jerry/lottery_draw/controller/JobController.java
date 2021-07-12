@@ -1,7 +1,10 @@
 package com.jerry.lottery_draw.controller;
 
 import com.jerry.lottery_draw.domain.TJob;
+import com.jerry.lottery_draw.req.JobCreateReq;
+import com.jerry.lottery_draw.req.JobQueryReq;
 import com.jerry.lottery_draw.req.LotteryDrawReq;
+import com.jerry.lottery_draw.resp.JobQueryResp;
 import com.jerry.lottery_draw.resp.LotteryDrawResp;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.JobService;
@@ -18,40 +21,53 @@ public class JobController {
     private JobService jobService;
 
     /**
-     * 根据groupId查询其下的所有Job信息
+     * 查询Job列表
      *
-     * @param groupId
+     * @param req
      * @return
      */
-    @GetMapping("/list/{groupId}")
-    public CommonResp listJob(@PathVariable String groupId) {
-        CommonResp<List<TJob>> resp = new CommonResp<>();
-        resp.setContent(jobService.listJob(groupId));
+    @GetMapping("/")
+    public CommonResp<List<JobQueryResp>> list(@RequestBody JobQueryReq req) {
+        CommonResp<List<JobQueryResp>> resp = new CommonResp<>();
+        resp.setContent(jobService.list(req));
         return resp;
     }
 
     /**
-     * 在某企业下新增一个Job
+     * 根据JobId查询Job
      *
-     * @param groupId
+     * @param jobId
      * @return
      */
-    @PutMapping("/add/{groupId}")
-    public CommonResp add(@PathVariable String groupId) {
+    @GetMapping("/{jobId}")
+    public CommonResp list(@PathVariable Long jobId) {
+        CommonResp<JobQueryResp> resp = new CommonResp<>();
+        resp.setContent(jobService.query(jobId));
+        return resp;
+    }
+
+    /**
+     * 创建Job
+     *
+     * @param req
+     * @return
+     */
+    @PostMapping("/")
+    public CommonResp create(@RequestBody JobCreateReq req) {
         CommonResp<TJob> resp = new CommonResp<>();
-        resp.setContent(jobService.createJob(groupId));
+        jobService.create(req);
         return resp;
     }
 
     /**
-     * 通过jobId删除Job
+     * 删除Job
      *
      * @param jobId
      */
-    @DeleteMapping("/delete/{jobId}")
+    @DeleteMapping("/{jobId}")
     public CommonResp delete(@PathVariable Long jobId) {
         CommonResp<TJob> resp = new CommonResp<>();
-        resp.setContent(jobService.deleteJob(jobId));
+        jobService.delete(jobId);
         return resp;
     }
 

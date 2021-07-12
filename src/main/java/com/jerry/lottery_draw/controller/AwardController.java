@@ -1,6 +1,6 @@
 package com.jerry.lottery_draw.controller;
 
-import com.jerry.lottery_draw.resp.AwardQueryRes;
+import com.jerry.lottery_draw.resp.AwardQueryResp;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.AwardService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +26,8 @@ public class AwardController {
      */
     @GetMapping("/{groupId}")
     public CommonResp list(@PathVariable String groupId) {
-        CommonResp<List<AwardQueryRes>> resp = new CommonResp<>();
-        List<AwardQueryRes> awardList = awardService.list(groupId);
+        CommonResp<List<AwardQueryResp>> resp = new CommonResp<>();
+        List<AwardQueryResp> awardList = awardService.list(groupId);
         resp.setContent(awardList);
         return resp;
     }
@@ -40,9 +40,9 @@ public class AwardController {
      * @return
      */
     @GetMapping("/{groupId}/{awardId}")
-    public CommonResp<AwardQueryRes> query(@PathVariable String groupId, @PathVariable String awardId) {
-        CommonResp<AwardQueryRes> resp = new CommonResp<>();
-        AwardQueryRes res = awardService.query(groupId, awardId);
+    public CommonResp<AwardQueryResp> query(@PathVariable String groupId, @PathVariable String awardId) {
+        CommonResp<AwardQueryResp> resp = new CommonResp<>();
+        AwardQueryResp res = awardService.query(groupId, awardId);
         resp.setContent(res);
         return resp;
     }
