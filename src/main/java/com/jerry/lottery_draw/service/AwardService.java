@@ -124,7 +124,7 @@ public class AwardService {
      * 更新奖品
      *
      * @param awardId String
-     * @param req AwardUpdateReq
+     * @param req     AwardUpdateReq
      */
     public void update(String awardId, AwardUpdateReq req) {
         TAward tAward = selectAwardById(awardId);
@@ -134,6 +134,22 @@ public class AwardService {
         }
         BeanUtils.copyProperties(req, tAward);
         tAward.setUpdatedAt(new Date());
+        // 执行更新
+        tAwardMapper.updateByPrimaryKeySelective(tAward);
+    }
+
+    /**
+     * 重置奖品状态
+     *
+     * @param awardId String
+     */
+    public void reset(String awardId) {
+        TAward tAward = selectAwardById(awardId);
+        if (ObjectUtil.isEmpty(tAward)) {
+            log.info("奖品不存在：{}", awardId);
+            throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
+        }
+        tAward.setRemainQuantity(tAward.getTotalQuantity());
         // 执行更新
         tAwardMapper.updateByPrimaryKeySelective(tAward);
     }

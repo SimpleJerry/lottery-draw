@@ -133,44 +133,42 @@ public class JobService {
     }
 
     /**
-     * 运行Job
+     * 进行抽奖事务
      *
      * @param jobId Long
      * @return JobDoResp
      */
     public JobDoResp doJob(Long jobId) {
-        //  构造返回体：JobDoResp-接下来需要分别填充awardId,groupId,remainQuantity和userList
-        JobDoResp jobDoResp = new JobDoResp();
-
-        // 通过jobId获取award_ids
+        // 通过jobId获取awardIds
         TJob tJob = selectJobByJobId(jobId);
         if (ObjectUtils.isEmpty(tJob)) {
-            log.info("jobId：{}不存在", jobId);
-            throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
+            log.info("事务不存在：{}", jobId);
+            throw new BusinessException(BusinessExceptionCode.JOB_NOT_EXISTS);
         }
-        List<String> awardIds = Arrays.asList("[A_0001,A_0002,A_0003,A_0004,A_0005]".replaceAll("[\\[\\]]", "").split(","));
+        List<String> awardIds = Arrays.asList(tJob.getAwardIds().replaceAll("[\\[\\]]", "").split(","));
+
         // 根据awardIds查询所有相关奖品信息
         TAwardExample tAwardExample = new TAwardExample();
         tAwardExample.createCriteria().andAwardIdIn(awardIds);
         tAwardExample.setOrderByClause("priority ASC");
         List<TAward> tAwards = tAwardMapper.selectByExample(tAwardExample);
+
+        // 遍历这些awards，直到运行完这个Job
+        // 构造返回体：JobDoResp-接下来需要分别填充awardId,groupId,remainQuantity和userList
+        JobDoResp jobDoResp = new JobDoResp();
         for (TAward tAward : tAwards) {
-            if (tAward.getRemainQuantity() <= 0) {
-                // 如果无剩余则跳过该奖品的抽奖
-                continue;
-            }
-            else {
-                jobDoResp.setAwardId(tAward.getAwardId());
-                jobDoResp.setGroupId(tAward.getGroupId());
+            // 如果无剩余则会自动跳过
+            if (tAward.getRemainQuantity() > 0) {
                 // 根据jobId获取中过奖的EmployeeIds，并获取没中过奖的TEmployee
-                List<String> selectedEmployeeIds = selectEmployeeIdsByJobId(jobId);
+                List<String> hasSelectedEmployeeIds = selectEmployeeIdsByJobId(jobId);
                 TEmployeeExample tEmployeeExample = new TEmployeeExample();
-                tEmployeeExample.createCriteria().andEmployeeIdNotIn(selectedEmployeeIds);
-                List<TEmployee> notSelectedEmployees = tEmployeeMapper.selectByExample(tEmployeeExample);
+                tEmployeeExample.createCriteria().andEmployeeIdNotIn(hasSelectedEmployeeIds);
+                List<TEmployee> neverSelectedEmployees = tEmployeeMapper.selectByExample(tEmployeeExample);
                 // 本轮中奖的Employees
                 Integer drawQuantity = (tAward.getRemainQuantity() < tAward.getOnceQuantity()) ? tAward.getRemainQuantity() : tAward.getOnceQuantity();
-                List<TEmployee> selectedEmployees = randomEleList(notSelectedEmployees, drawQuantity);
-                // 填充剩余字段
+                List<TEmployee> selectedEmployees = randomEleList(neverSelectedEmployees, drawQuantity);
+                // 填充字段
+                BeanUtils.copyProperties(tAward, jobDoResp);
                 jobDoResp.setRemainQuantity(tAward.getRemainQuantity() - drawQuantity);
                 jobDoResp.setUserList(selectedEmployees);
                 log.info("返回体已构造完毕");
@@ -194,7 +192,6 @@ public class JobService {
                 break;
             }
         }
-
         return jobDoResp;
     }
 

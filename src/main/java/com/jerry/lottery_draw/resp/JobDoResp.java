@@ -1,10 +1,13 @@
 package com.jerry.lottery_draw.resp;
 
 import com.jerry.lottery_draw.domain.TEmployee;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class JobDoResp {
+
     private String awardId;
 
     private String groupId;
@@ -13,45 +16,4 @@ public class JobDoResp {
 
     private List<TEmployee> userList;
 
-    public String getAwardId() {
-        return awardId;
-    }
-
-    public void setAwardId(String awardId) {
-        this.awardId = awardId;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
-    public Integer getRemainQuantity() {
-        return remainQuantity;
-    }
-
-    public void setRemainQuantity(Integer remainQuantity) {
-        this.remainQuantity = remainQuantity;
-    }
-
-    public List<TEmployee> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<TEmployee> userList) {
-        this.userList = userList;
-    }
-
-    @Override
-    public String toString() {
-        return "JobDoResp{" +
-                "awardId='" + awardId + '\'' +
-                ", groupId='" + groupId + '\'' +
-                ", remainQuantity=" + remainQuantity +
-                ", userList=" + userList +
-                '}';
-    }
 }

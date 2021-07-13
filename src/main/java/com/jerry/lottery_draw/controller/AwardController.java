@@ -77,12 +77,25 @@ public class AwardController {
      *
      * @param awardId String
      * @param req     AwardUpdateReq
-     * @return
+     * @return null
      */
     @PutMapping("/{awardId}")
     public CommonResp<Object> update(@PathVariable String awardId, @RequestBody AwardUpdateReq req) {
         CommonResp<Object> resp = new CommonResp<>();
         awardService.update(awardId, req);
+        return resp;
+    }
+
+    /**
+     * 重置奖品状态
+     *
+     * @param awardId String
+     * @return null
+     */
+    @PutMapping("/{awardId}/reset")
+    public CommonResp<Object> reset(@PathVariable String awardId) {
+        CommonResp<Object> resp = new CommonResp<>();
+        awardService.reset(awardId);
         return resp;
     }
 }

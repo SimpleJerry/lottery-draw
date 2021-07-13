@@ -2,7 +2,6 @@ package com.jerry.lottery_draw.controller;
 
 import com.jerry.lottery_draw.req.JobCreateReq;
 import com.jerry.lottery_draw.req.JobQueryReq;
-import com.jerry.lottery_draw.req.JobDoReq;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.resp.JobQueryResp;
 import com.jerry.lottery_draw.resp.JobDoResp;
@@ -74,13 +73,13 @@ public class JobController {
     /**
      * 进行抽奖事务
      *
-     * @param req JobDoReq
+     * @param jobId Long
      * @return JobDoResp
      */
     @PostMapping("/{jobId}/do")
-    public CommonResp<JobDoResp> doJob(@PathVariable Long jobId, @RequestBody JobDoReq req) {
+    public CommonResp<JobDoResp> doJob(@PathVariable Long jobId) {
         CommonResp<JobDoResp> resp = new CommonResp<>();
-        JobDoResp jobDoResp = jobService.doJob(req.getJobId());
+        JobDoResp jobDoResp = jobService.doJob(jobId);
         resp.setContent(jobDoResp);
         return resp;
     }
