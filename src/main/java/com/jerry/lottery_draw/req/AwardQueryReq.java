@@ -3,7 +3,6 @@ package com.jerry.lottery_draw.req;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.Date;
 
 @Data
 public class AwardQueryReq {

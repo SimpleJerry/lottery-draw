@@ -24,7 +24,7 @@ public class AwardController {
      * @param req AwardQueryReq
      * @return List<AwardQueryResp>
      */
-    @GetMapping("/{groupId}")
+    @GetMapping("/")
     public CommonResp<List<AwardQueryResp>> list(@RequestBody AwardQueryReq req) {
         CommonResp<List<AwardQueryResp>> resp = new CommonResp<>();
         List<AwardQueryResp> res = awardService.list(req);
@@ -52,7 +52,7 @@ public class AwardController {
      * @param req AwardAddReq
      * @return null
      */
-    @PostMapping("/")
+    @PutMapping("/")
     public CommonResp<Object> add(@RequestBody AwardAddReq req) {
         CommonResp<Object> resp = new CommonResp<>();
         awardService.add(req);

@@ -2,8 +2,8 @@ package com.jerry.lottery_draw.service;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.jerry.lottery_draw.domain.TAward;
-import com.jerry.lottery_draw.domain.TAwardExample;
 import com.jerry.lottery_draw.exception.BusinessException;
 import com.jerry.lottery_draw.exception.BusinessExceptionCode;
 import com.jerry.lottery_draw.mapper.TAwardMapper;
@@ -11,6 +11,7 @@ import com.jerry.lottery_draw.req.AwardAddReq;
 import com.jerry.lottery_draw.req.AwardQueryReq;
 import com.jerry.lottery_draw.req.AwardUpdateReq;
 import com.jerry.lottery_draw.resp.AwardQueryResp;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -38,9 +39,9 @@ public class AwardService {
      * @return TAward
      */
     public TAward selectAwardById(String awardId) {
-        TAwardExample tAwardExample = new TAwardExample();
-        tAwardExample.createCriteria().andAwardIdEqualTo(awardId);
-        List<TAward> awardList = tAwardMapper.selectByExample(tAwardExample);
+        LambdaQueryWrapper<TAward> sqlWhereWrapper = new LambdaQueryWrapper<TAward>()
+                .eq(StringUtils.isNotBlank(awardId), TAward::getAwardId, awardId);
+        List<TAward> awardList = tAwardMapper.selectList(sqlWhereWrapper);
         if (CollectionUtils.isEmpty(awardList)) {
             // 未找到
             return null;
@@ -57,12 +58,11 @@ public class AwardService {
      * @return List<AwardQueryResp>
      */
     public List<AwardQueryResp> list(AwardQueryReq req) {
-        TAwardExample tAwardExample = new TAwardExample();
-        tAwardExample.createCriteria()
-                .andGroupIdEqualTo(req.getGroupId())
-                .andAwardIdEqualTo(req.getAwardId())
-                .andAwardNameEqualTo(req.getAwardName());
-        List<TAward> awardList = tAwardMapper.selectByExample(tAwardExample);
+        LambdaQueryWrapper<TAward> sqlWhereWrapper = new LambdaQueryWrapper<TAward>()
+                .eq(StringUtils.isNotBlank(req.getGroupId()), TAward::getGroupId, req.getGroupId())
+                .eq(StringUtils.isNotBlank(req.getAwardId()), TAward::getAwardId, req.getAwardId())
+                .eq(StringUtils.isNotBlank(req.getAwardName()), TAward::getAwardName, req.getAwardName());
+        List<TAward> awardList = tAwardMapper.selectList(sqlWhereWrapper);
         // Bean转换
         List<AwardQueryResp> res = new ArrayList<>();
         for (TAward award : awardList) {
@@ -102,7 +102,7 @@ public class AwardService {
         BeanUtils.copyProperties(req, tAward);
         tAward.setAwardId(new Snowflake(1, 1).nextIdStr());
         // 执行创建
-        tAwardMapper.insertSelective(tAward);
+        tAwardMapper.insert(tAward);
     }
 
     /**
@@ -117,7 +117,7 @@ public class AwardService {
             throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
         }
         // 执行删除
-        tAwardMapper.deleteByPrimaryKey(tAward.getId());
+        tAwardMapper.deleteById(tAward.getId());
     }
 
     /**
@@ -135,7 +135,7 @@ public class AwardService {
         BeanUtils.copyProperties(req, tAward);
         tAward.setUpdatedAt(new Date());
         // 执行更新
-        tAwardMapper.updateByPrimaryKeySelective(tAward);
+        tAwardMapper.updateById(tAward);
     }
 
     /**
@@ -151,7 +151,7 @@ public class AwardService {
         }
         tAward.setRemainQuantity(tAward.getTotalQuantity());
         // 执行更新
-        tAwardMapper.updateByPrimaryKeySelective(tAward);
+        tAwardMapper.updateById(tAward);
     }
 
 }

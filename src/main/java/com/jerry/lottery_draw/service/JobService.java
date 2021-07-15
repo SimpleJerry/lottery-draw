@@ -2,6 +2,7 @@ package com.jerry.lottery_draw.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Snowflake;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.jerry.lottery_draw.domain.*;
 import com.jerry.lottery_draw.exception.BusinessException;
 import com.jerry.lottery_draw.exception.BusinessExceptionCode;
@@ -10,11 +11,12 @@ import com.jerry.lottery_draw.req.JobCreateReq;
 import com.jerry.lottery_draw.req.JobQueryReq;
 import com.jerry.lottery_draw.resp.JobDoResp;
 import com.jerry.lottery_draw.resp.JobQueryResp;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -50,15 +52,9 @@ public class JobService {
      * @return TJob
      */
     public TJob selectJobByJobId(Long jobId) {
-        TJobExample tJobExample = new TJobExample();
-        tJobExample.createCriteria().andJobIdEqualTo(jobId);
-        List<TJob> tJobs = tJobMapper.selectByExample(tJobExample);
-        if (ObjectUtils.isEmpty(tJobs)) {
-            return null;
-        }
-        else {
-            return tJobs.get(0);
-        }
+        LambdaQueryWrapper<TJob> sqlWhereWrapper = new LambdaQueryWrapper<TJob>()
+                .eq(ObjectUtils.isNotEmpty(jobId), TJob::getJobId, jobId);
+        return tJobMapper.selectOne(sqlWhereWrapper);
     }
 
     /**
@@ -68,11 +64,10 @@ public class JobService {
      * @return List<JobQueryResp>
      */
     public List<JobQueryResp> list(JobQueryReq req) {
-        TJobExample tJobExample = new TJobExample();
-        tJobExample.createCriteria()
-                .andJobIdEqualTo(req.getJobId())
-                .andGroupIdEqualTo(req.getGroupId());
-        List<TJob> tJobs = tJobMapper.selectByExample(tJobExample);
+        LambdaQueryWrapper<TJob> sqlWhereWrapper = new LambdaQueryWrapper<TJob>()
+                .eq(ObjectUtils.isNotEmpty(req.getJobId()), TJob::getJobId, req.getJobId())
+                .eq(StringUtils.isNotBlank(req.getGroupId()), TJob::getGroupId, req.getGroupId());
+        List<TJob> tJobs = tJobMapper.selectList(sqlWhereWrapper);
         // Bean转换
         List<JobQueryResp> res = new ArrayList<>();
         for (TJob job : tJobs) {
@@ -115,7 +110,7 @@ public class JobService {
         tJob.setGroupId(req.getGroupId());
         tJob.setAwardIds("[]");
         // 插入数据库
-        tJobMapper.insertSelective(tJob);
+        tJobMapper.insert(tJob);
     }
 
     /**
@@ -129,7 +124,7 @@ public class JobService {
             log.info("事务不存在：{}", jobId);
             throw new BusinessException(BusinessExceptionCode.JOB_NOT_EXISTS);
         }
-        tJobMapper.deleteByPrimaryKey(tJob.getId());
+        tJobMapper.deleteById(tJob.getId());
     }
 
     /**
@@ -148,10 +143,10 @@ public class JobService {
         List<String> awardIds = Arrays.asList(tJob.getAwardIds().replaceAll("[\\[\\]]", "").split(","));
 
         // 根据awardIds查询所有相关奖品信息
-        TAwardExample tAwardExample = new TAwardExample();
-        tAwardExample.createCriteria().andAwardIdIn(awardIds);
-        tAwardExample.setOrderByClause("priority ASC");
-        List<TAward> tAwards = tAwardMapper.selectByExample(tAwardExample);
+        LambdaQueryWrapper<TAward> sqlWhereWrapper = new LambdaQueryWrapper<TAward>()
+                .notIn(TAward::getAwardId, awardIds)
+                .orderByAsc(TAward::getPriority);
+        List<TAward> tAwards = tAwardMapper.selectList(sqlWhereWrapper);
 
         // 遍历这些awards，直到运行完这个Job
         // 构造返回体：JobDoResp-接下来需要分别填充awardId,groupId,remainQuantity和userList
@@ -161,9 +156,9 @@ public class JobService {
             if (tAward.getRemainQuantity() > 0) {
                 // 根据jobId获取中过奖的EmployeeIds，并获取没中过奖的TEmployee
                 List<String> hasSelectedEmployeeIds = selectEmployeeIdsByJobId(jobId);
-                TEmployeeExample tEmployeeExample = new TEmployeeExample();
-                tEmployeeExample.createCriteria().andEmployeeIdNotIn(hasSelectedEmployeeIds);
-                List<TEmployee> neverSelectedEmployees = tEmployeeMapper.selectByExample(tEmployeeExample);
+                LambdaQueryWrapper<TEmployee> employeeSqlWhereWrapper = new LambdaQueryWrapper<TEmployee>()
+                        .notIn(TEmployee::getEmployeeId, hasSelectedEmployeeIds);
+                List<TEmployee> neverSelectedEmployees = tEmployeeMapper.selectList(employeeSqlWhereWrapper);
                 // 本轮中奖的Employees
                 Integer drawQuantity = (tAward.getRemainQuantity() < tAward.getOnceQuantity()) ? tAward.getRemainQuantity() : tAward.getOnceQuantity();
                 List<TEmployee> selectedEmployees = randomEleList(neverSelectedEmployees, drawQuantity);
@@ -174,7 +169,7 @@ public class JobService {
                 log.info("返回体已构造完毕");
                 // 保存对tAward的更改
                 tAward.setRemainQuantity(tAward.getRemainQuantity() - drawQuantity);
-                tAwardMapper.updateByPrimaryKey(tAward);
+                tAwardMapper.updateById(tAward);
                 // 最后将抽奖结果存入t_job_result和t_history
                 for (TEmployee tEmployee : selectedEmployees) {
                     // t_job_result
@@ -183,11 +178,11 @@ public class JobService {
                     tJobResult.setGroupId(tJob.getGroupId());
                     tJobResult.setEmployeeId(tEmployee.getEmployeeId());
                     tJobResult.setAwardId(tAward.getAwardId());
-                    tJobResultMapper.insertSelective(tJobResult);
+                    tJobResultMapper.insert(tJobResult);
                     // t_history
                     THistory tHistory = new THistory();
                     BeanUtil.copyProperties(tJobResult, tHistory);
-                    tHistoryMapper.insertSelective(tHistory);
+                    tHistoryMapper.insert(tHistory);
                 }
                 break;
             }
@@ -202,9 +197,9 @@ public class JobService {
      * @return List<String>
      */
     public List<String> selectEmployeeIdsByJobId(Long jobId) {
-        TJobResultExample tJobResultExample = new TJobResultExample();
-        tJobResultExample.createCriteria().andJobIdEqualTo(jobId);
-        List<TJobResult> tJobResults = tJobResultMapper.selectByExample(tJobResultExample);
+        LambdaQueryWrapper<TJobResult> sqlWhereWrapper = new LambdaQueryWrapper<TJobResult>()
+                .eq(ObjectUtils.isNotEmpty(jobId), TJobResult::getJobId, jobId);
+        List<TJobResult> tJobResults = tJobResultMapper.selectList(sqlWhereWrapper);
         List<String> employeeIds = new ArrayList<>();
         for (TJobResult tJobResult : tJobResults) {
             employeeIds.add(tJobResult.getEmployeeId());

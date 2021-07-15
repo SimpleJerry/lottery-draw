@@ -1,8 +1,8 @@
 package com.jerry.lottery_draw.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.jerry.lottery_draw.domain.TAdmin;
-import com.jerry.lottery_draw.domain.TAdminExample;
 import com.jerry.lottery_draw.exception.BusinessException;
 import com.jerry.lottery_draw.exception.BusinessExceptionCode;
 import com.jerry.lottery_draw.mapper.TAdminMapper;
@@ -10,15 +10,14 @@ import com.jerry.lottery_draw.req.AdminCreateReq;
 import com.jerry.lottery_draw.req.AdminLoginReq;
 import com.jerry.lottery_draw.req.AdminUpdateReq;
 import com.jerry.lottery_draw.resp.AdminLoginResp;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Service
 public class AdminService {
@@ -35,15 +34,9 @@ public class AdminService {
      * @return
      */
     public TAdmin selectByAccount(String account) {
-        TAdminExample tAdminExample = new TAdminExample();
-        tAdminExample.createCriteria().andAccountEqualTo(account);
-        List<TAdmin> tAdminList = tAdminMapper.selectByExample(tAdminExample);
-        if (CollectionUtils.isEmpty(tAdminList)) {
-            return null;
-        }
-        else {
-            return tAdminList.get(0);
-        }
+        LambdaQueryWrapper<TAdmin> sqlWhereWrapper = new LambdaQueryWrapper<TAdmin>()
+                .eq(StringUtils.isNotBlank(account), TAdmin::getAccount, account);
+        return tAdminMapper.selectOne(sqlWhereWrapper);
     }
 
     /**
@@ -72,7 +65,7 @@ public class AdminService {
      * @param id
      */
     public void delete(Long id) {
-        tAdminMapper.deleteByPrimaryKey(id);
+        tAdminMapper.deleteById(id);
     }
 
     /**
@@ -91,7 +84,7 @@ public class AdminService {
         else {
             // 用户名已存在
             BeanUtils.copyProperties(req, tAdmin);
-            tAdminMapper.updateByPrimaryKeySelective(tAdmin);
+            tAdminMapper.updateById(tAdmin);
         }
     }
 
