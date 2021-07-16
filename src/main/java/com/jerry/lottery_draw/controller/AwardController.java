@@ -9,6 +9,7 @@ import com.jerry.lottery_draw.service.AwardService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class AwardController {
      * @return List<AwardQueryResp>
      */
     @GetMapping("/")
-    public CommonResp<List<AwardQueryResp>> list(@RequestBody AwardQueryReq req) {
+    public CommonResp<List<AwardQueryResp>> list(@RequestBody @Valid AwardQueryReq req) {
         CommonResp<List<AwardQueryResp>> resp = new CommonResp<>();
         List<AwardQueryResp> res = awardService.list(req);
         resp.setContent(res);
@@ -39,7 +40,7 @@ public class AwardController {
      * @return AwardQueryResp
      */
     @GetMapping("/{awardId}")
-    public CommonResp<AwardQueryResp> query(@PathVariable String awardId) {
+    public CommonResp<AwardQueryResp> query(@PathVariable @Valid String awardId) {
         CommonResp<AwardQueryResp> resp = new CommonResp<>();
         AwardQueryResp res = awardService.query(awardId);
         resp.setContent(res);
@@ -53,7 +54,7 @@ public class AwardController {
      * @return null
      */
     @PutMapping("/")
-    public CommonResp<Object> add(@RequestBody AwardAddReq req) {
+    public CommonResp<Object> add(@RequestBody @Valid AwardAddReq req) {
         CommonResp<Object> resp = new CommonResp<>();
         awardService.add(req);
         return resp;
@@ -80,7 +81,7 @@ public class AwardController {
      * @return null
      */
     @PutMapping("/{awardId}")
-    public CommonResp<Object> update(@PathVariable String awardId, @RequestBody AwardUpdateReq req) {
+    public CommonResp<Object> update(@PathVariable String awardId, @RequestBody @Valid AwardUpdateReq req) {
         CommonResp<Object> resp = new CommonResp<>();
         awardService.update(awardId, req);
         return resp;

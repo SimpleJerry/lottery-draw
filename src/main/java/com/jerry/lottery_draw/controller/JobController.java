@@ -9,6 +9,7 @@ import com.jerry.lottery_draw.service.JobService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class JobController {
      * @return List<JobQueryResp>
      */
     @GetMapping("/")
-    public CommonResp<List<JobQueryResp>> list(@RequestBody JobQueryReq req) {
+    public CommonResp<List<JobQueryResp>> list(@RequestBody @Valid JobQueryReq req) {
         CommonResp<List<JobQueryResp>> resp = new CommonResp<>();
         resp.setContent(jobService.list(req));
         return resp;
@@ -38,7 +39,7 @@ public class JobController {
      * @return JobQueryResp
      */
     @GetMapping("/{jobId}")
-    public CommonResp<JobQueryResp> list(@PathVariable Long jobId) {
+    public CommonResp<JobQueryResp> list(@PathVariable @Valid Long jobId) {
         CommonResp<JobQueryResp> resp = new CommonResp<>();
         resp.setContent(jobService.query(jobId));
         return resp;
@@ -51,7 +52,7 @@ public class JobController {
      * @return null
      */
     @PostMapping("/")
-    public CommonResp<Object> create(@RequestBody JobCreateReq req) {
+    public CommonResp<Object> create(@RequestBody @Valid JobCreateReq req) {
         CommonResp<Object> resp = new CommonResp<>();
         jobService.create(req);
         return resp;

@@ -6,10 +6,12 @@ import com.jerry.lottery_draw.req.AdminUpdateReq;
 import com.jerry.lottery_draw.resp.AdminLoginResp;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.AdminService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/admin")
@@ -21,13 +23,15 @@ public class AdminController {
     /**
      * 创建帐号
      *
-     * @param req
-     * @return
+     * @param req AdminCreateReq
+     * @return CommonResp
      */
+    @ApiOperation(value = "创建帐号", notes = "", response = CommonResp.class)
     @PostMapping("/")
-    public CommonResp<Object> create(@RequestBody AdminCreateReq req) {
-        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+    public CommonResp<Object> create(@RequestBody @Valid AdminCreateReq req) {
         CommonResp<Object> resp = new CommonResp<>();
+        // 密码进行MD5加密
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         adminService.create(req);
         return resp;
     }
@@ -53,7 +57,7 @@ public class AdminController {
      * @return
      */
     @PutMapping("/{account}")
-    public CommonResp<Object> update(@PathVariable String account, @RequestBody AdminUpdateReq req) {
+    public CommonResp<Object> update(@PathVariable String account, @RequestBody @Valid AdminUpdateReq req) {
         CommonResp<Object> resp = new CommonResp<>();
         adminService.update(account, req);
         return resp;
@@ -66,7 +70,7 @@ public class AdminController {
      * @return
      */
     @PostMapping("/login")
-    public CommonResp<AdminLoginResp> login(@RequestBody AdminLoginReq adminLoginReq) {
+    public CommonResp<AdminLoginResp> login(@RequestBody @Valid AdminLoginReq adminLoginReq) {
         CommonResp<AdminLoginResp> resp = new CommonResp<>();
         AdminLoginResp adminLoginResp = adminService.login(adminLoginReq);
         resp.setContent(adminLoginResp);
