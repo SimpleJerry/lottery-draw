@@ -1,6 +1,11 @@
 package com.jerry.lottery_draw.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 public class Test {
+
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     private String name;
