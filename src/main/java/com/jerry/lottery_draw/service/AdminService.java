@@ -10,12 +10,12 @@ import com.jerry.lottery_draw.req.AdminCreateReq;
 import com.jerry.lottery_draw.req.AdminLoginReq;
 import com.jerry.lottery_draw.req.AdminUpdateReq;
 import com.jerry.lottery_draw.resp.AdminLoginResp;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 
@@ -30,19 +30,19 @@ public class AdminService {
     /**
      * 工具方法：根据account字段查询对应的帐号
      *
-     * @param account
-     * @return
+     * @param account String
+     * @return TAdmin
      */
     public TAdmin selectByAccount(String account) {
         LambdaQueryWrapper<TAdmin> sqlWhereWrapper = new LambdaQueryWrapper<TAdmin>()
-                .eq(StringUtils.isNotBlank(account), TAdmin::getAccount, account);
+                .eq(account != null, TAdmin::getAccount, account);
         return tAdminMapper.selectOne(sqlWhereWrapper);
     }
 
     /**
      * 创建帐号
      *
-     * @param req
+     * @param req AdminCreateReq
      */
     public void create(AdminCreateReq req) {
         TAdmin tAdmin = selectByAccount(req.getAccount());
@@ -62,17 +62,25 @@ public class AdminService {
     /**
      * 删除帐号
      *
-     * @param id
+     * @param account String
      */
-    public void delete(Long id) {
-        tAdminMapper.deleteById(id);
+    public void delete(String account) {
+        TAdmin tAdmin = selectByAccount(account);
+        if (ObjectUtils.isEmpty(tAdmin)) {
+            // 用户尚不存在
+            LOG.info("用户名不存在, {}", account);
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        }
+        else {
+            tAdminMapper.deleteById(tAdmin.getId());
+        }
     }
 
     /**
      * 更新帐号
      *
-     * @param account
-     * @param req
+     * @param account String
+     * @param req     AdminUpdateReq
      */
     public void update(String account, AdminUpdateReq req) {
         TAdmin tAdmin = selectByAccount(account);
@@ -82,7 +90,7 @@ public class AdminService {
             throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
         }
         else {
-            // 用户名已存在
+            req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
             BeanUtils.copyProperties(req, tAdmin);
             tAdminMapper.updateById(tAdmin);
         }
@@ -91,8 +99,8 @@ public class AdminService {
     /**
      * 登录验证
      *
-     * @param req
-     * @return
+     * @param req AdminLoginReq
+     * @return AdminLoginResp
      */
     public AdminLoginResp login(AdminLoginReq req) {
         TAdmin adminDb = selectByAccount(req.getAccount());
@@ -102,7 +110,7 @@ public class AdminService {
             throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
         }
         else {
-            if (adminDb.getPassword().equals(req.getPassword())) {
+            if (adminDb.getPassword().equals(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()))) {
                 // 登录成功
                 AdminLoginResp userLoginResp = new AdminLoginResp();
                 BeanUtil.copyProperties(adminDb, userLoginResp);

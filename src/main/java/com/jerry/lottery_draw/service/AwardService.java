@@ -11,13 +11,13 @@ import com.jerry.lottery_draw.req.AwardAddReq;
 import com.jerry.lottery_draw.req.AwardQueryReq;
 import com.jerry.lottery_draw.req.AwardUpdateReq;
 import com.jerry.lottery_draw.resp.AwardQueryResp;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class AwardService {
      */
     public TAward selectAwardById(String awardId) {
         LambdaQueryWrapper<TAward> sqlWhereWrapper = new LambdaQueryWrapper<TAward>()
-                .eq(StringUtils.isNotBlank(awardId), TAward::getAwardId, awardId);
+                .eq(awardId != null, TAward::getAwardId, awardId);
         List<TAward> awardList = tAwardMapper.selectList(sqlWhereWrapper);
         if (CollectionUtils.isEmpty(awardList)) {
             // 未找到

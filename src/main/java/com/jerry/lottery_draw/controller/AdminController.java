@@ -24,7 +24,7 @@ public class AdminController {
      * 创建帐号
      *
      * @param req AdminCreateReq
-     * @return CommonResp
+     * @return CommonResp<Object>
      */
     @ApiOperation(value = "创建帐号", notes = "", response = CommonResp.class)
     @PostMapping("/")
@@ -39,23 +39,25 @@ public class AdminController {
     /**
      * 删除帐号
      *
-     * @param id
-     * @return
+     * @param account String
+     * @return CommonResp<Object>
      */
+    @ApiOperation(value = "删除帐号", notes = "", response = CommonResp.class)
     @DeleteMapping("/{account}")
-    public CommonResp<Object> delete(@PathVariable Long id) {
+    public CommonResp<Object> delete(@PathVariable String account) {
         CommonResp<Object> resp = new CommonResp<>();
-        adminService.delete(id);
+        adminService.delete(account);
         return resp;
     }
 
     /**
      * 更新帐号
      *
-     * @param account
-     * @param req
-     * @return
+     * @param account String
+     * @param req     AdminUpdateReq
+     * @return CommonResp<Object>
      */
+    @ApiOperation(value = "更新帐号", notes = "", response = CommonResp.class)
     @PutMapping("/{account}")
     public CommonResp<Object> update(@PathVariable String account, @RequestBody @Valid AdminUpdateReq req) {
         CommonResp<Object> resp = new CommonResp<>();
@@ -66,9 +68,10 @@ public class AdminController {
     /**
      * 登录验证
      *
-     * @param adminLoginReq
-     * @return
+     * @param adminLoginReq AdminLoginReq
+     * @return CommonResp<AdminLoginResp>
      */
+    @ApiOperation(value = "登录验证", notes = "", response = CommonResp.class)
     @PostMapping("/login")
     public CommonResp<AdminLoginResp> login(@RequestBody @Valid AdminLoginReq adminLoginReq) {
         CommonResp<AdminLoginResp> resp = new CommonResp<>();

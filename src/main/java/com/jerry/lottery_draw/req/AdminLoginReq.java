@@ -1,36 +1,18 @@
 package com.jerry.lottery_draw.req;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import javax.validation.constraints.NotEmpty;
 
+@Data
 public class AdminLoginReq {
 
     @NotEmpty(message = "【帐号】不能为空")
+    @ApiModelProperty(value = "帐号", required = true)
     private String account;
 
     @NotEmpty(message = "【密码】不能为空")
+    @ApiModelProperty(value = "密码", required = true)
     private String password;
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "AdminLoginReq{" +
-                "account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }
