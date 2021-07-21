@@ -11,13 +11,11 @@ import com.jerry.lottery_draw.req.AwardAddReq;
 import com.jerry.lottery_draw.req.AwardQueryReq;
 import com.jerry.lottery_draw.req.AwardUpdateReq;
 import com.jerry.lottery_draw.resp.AwardQueryResp;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -41,27 +39,20 @@ public class AwardService {
     public TAward selectAwardById(String awardId) {
         LambdaQueryWrapper<TAward> sqlWhereWrapper = new LambdaQueryWrapper<TAward>()
                 .eq(awardId != null, TAward::getAwardId, awardId);
-        List<TAward> awardList = tAwardMapper.selectList(sqlWhereWrapper);
-        if (CollectionUtils.isEmpty(awardList)) {
-            // 未找到
-            return null;
-        }
-        else {
-            return awardList.get(0);
-        }
+        return tAwardMapper.selectOne(sqlWhereWrapper);
     }
 
     /**
-     * 根据条件查询奖品
+     * 查询全部奖品
      *
      * @param req AwardQueryReq
      * @return List<AwardQueryResp>
      */
     public List<AwardQueryResp> list(AwardQueryReq req) {
         LambdaQueryWrapper<TAward> sqlWhereWrapper = new LambdaQueryWrapper<TAward>()
-                .eq(StringUtils.isNotBlank(req.getGroupId()), TAward::getGroupId, req.getGroupId())
-                .eq(StringUtils.isNotBlank(req.getAwardId()), TAward::getAwardId, req.getAwardId())
-                .eq(StringUtils.isNotBlank(req.getAwardName()), TAward::getAwardName, req.getAwardName());
+                .likeRight(StringUtils.isNotBlank(req.getGroupId()), TAward::getGroupId, req.getGroupId())
+                .likeRight(StringUtils.isNotBlank(req.getAwardId()), TAward::getAwardId, req.getAwardId())
+                .likeRight(StringUtils.isNotBlank(req.getAwardName()), TAward::getAwardName, req.getAwardName());
         List<TAward> awardList = tAwardMapper.selectList(sqlWhereWrapper);
         // Bean转换
         List<AwardQueryResp> res = new ArrayList<>();
@@ -81,13 +72,13 @@ public class AwardService {
      */
     public AwardQueryResp query(String awardId) {
         TAward tAward = selectAwardById(awardId);
-        if (ObjectUtils.isEmpty(tAward)) {
-            return null;
-        }
-        else {
+        if (tAward != null) {
             AwardQueryResp res = new AwardQueryResp();
             BeanUtils.copyProperties(tAward, res);
             return res;
+        }
+        else {
+            return null;
         }
     }
 
@@ -101,6 +92,10 @@ public class AwardService {
         TAward tAward = new TAward();
         BeanUtils.copyProperties(req, tAward);
         tAward.setAwardId(new Snowflake(1, 1).nextIdStr());
+        tAward.setOnceQuantity(req.getOnceQuantity() != null ? req.getOnceQuantity() : 1);
+        tAward.setTotalQuantity(req.getTotalQuantity() != null ? req.getTotalQuantity() : 0);
+        tAward.setRemainQuantity(tAward.getTotalQuantity());
+        tAward.setPriority(req.getPriority() != null ? req.getPriority() : 0);
         // 执行创建
         tAwardMapper.insert(tAward);
     }

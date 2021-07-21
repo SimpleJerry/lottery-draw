@@ -1,27 +1,18 @@
 package com.jerry.lottery_draw.req;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotEmpty;
 
 @Data
 public class AwardQueryReq {
 
-    @NotEmpty(message = "【组织Id】不能为空")
+    @ApiModelProperty(value = "组织Id", required = false)
     private String groupId;
 
+    @ApiModelProperty(value = "奖品Id", required = false)
     private String awardId;
 
+    @ApiModelProperty(value = "奖品名称", required = false)
     private String awardName;
-
-    private Integer onceQuantity;
-
-    private Integer totalQuantity;
-
-    private Integer remainQuantity;
-
-    private Integer priority;
-
-    private String img;
 
 }
