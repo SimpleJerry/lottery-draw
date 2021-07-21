@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static cn.hutool.core.util.RandomUtil.randomEleList;
 
@@ -58,15 +59,14 @@ public class JobService {
     }
 
     /**
-     * 查询Job
+     * 查询全部Job
      *
      * @param req JobQueryReq
      * @return List<JobQueryResp>
      */
     public List<JobQueryResp> list(JobQueryReq req) {
         LambdaQueryWrapper<TJob> sqlWhereWrapper = new LambdaQueryWrapper<TJob>()
-                .eq(ObjectUtils.isNotEmpty(req.getJobId()), TJob::getJobId, req.getJobId())
-                .eq(StringUtils.isNotBlank(req.getGroupId()), TJob::getGroupId, req.getGroupId());
+                .likeRight(StringUtils.isNotBlank(req.getGroupId()), TJob::getGroupId, req.getGroupId());
         List<TJob> tJobs = tJobMapper.selectList(sqlWhereWrapper);
         // Bean转换
         List<JobQueryResp> res = new ArrayList<>();
@@ -79,7 +79,7 @@ public class JobService {
     }
 
     /**
-     * 根据JobId查询Job
+     * 查询单个Job
      *
      * @param jobId Long
      * @return JobQueryResp
@@ -108,7 +108,7 @@ public class JobService {
         TJob tJob = new TJob();
         tJob.setJobId(new Snowflake(1, 1).nextId());
         tJob.setGroupId(req.getGroupId());
-        tJob.setAwardIds("[]");
+        tJob.setAwardIds("[" + String.join(",", req.getAwardIds()) + "]");
         // 插入数据库
         tJobMapper.insert(tJob);
     }
@@ -155,7 +155,9 @@ public class JobService {
             // 如果无剩余则会自动跳过
             if (tAward.getRemainQuantity() > 0) {
                 // 根据jobId获取中过奖的EmployeeIds，并获取没中过奖的TEmployee
-                List<String> hasSelectedEmployeeIds = selectEmployeeIdsByJobId(jobId);
+                List<String> hasSelectedEmployeeIds = queryJobResult(jobId).stream()
+                        .map(TJobResult::getEmployeeId)
+                        .collect(Collectors.toList());
                 LambdaQueryWrapper<TEmployee> employeeSqlWhereWrapper = new LambdaQueryWrapper<TEmployee>()
                         .notIn(TEmployee::getEmployeeId, hasSelectedEmployeeIds);
                 List<TEmployee> neverSelectedEmployees = tEmployeeMapper.selectList(employeeSqlWhereWrapper);
@@ -191,20 +193,15 @@ public class JobService {
     }
 
     /**
-     * 根据JobId获取获奖人员名单
+     * 查询抽奖结果
      *
      * @param jobId Long
-     * @return List<String>
+     * @return List<TJobResult>
      */
-    public List<String> selectEmployeeIdsByJobId(Long jobId) {
+    public List<TJobResult> queryJobResult(Long jobId) {
         LambdaQueryWrapper<TJobResult> sqlWhereWrapper = new LambdaQueryWrapper<TJobResult>()
                 .eq(ObjectUtils.isNotEmpty(jobId), TJobResult::getJobId, jobId);
-        List<TJobResult> tJobResults = tJobResultMapper.selectList(sqlWhereWrapper);
-        List<String> employeeIds = new ArrayList<>();
-        for (TJobResult tJobResult : tJobResults) {
-            employeeIds.add(tJobResult.getEmployeeId());
-        }
-        return employeeIds;
+        return tJobResultMapper.selectList(sqlWhereWrapper);
     }
 
 }
