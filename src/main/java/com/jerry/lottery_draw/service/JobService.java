@@ -145,7 +145,7 @@ public class JobService {
 
         // 根据awardIds查询所有相关奖品信息
         LambdaQueryWrapper<TAward> sqlWhereWrapper = new LambdaQueryWrapper<TAward>()
-                .notIn(TAward::getAwardId, awardIds)
+                .in(TAward::getAwardId, awardIds)
                 .orderByAsc(TAward::getPriority);
         List<TAward> tAwards = tAwardMapper.selectList(sqlWhereWrapper);
 
@@ -163,7 +163,7 @@ public class JobService {
                         .map(TJobResult::getEmployeeId)
                         .collect(Collectors.toList());
                 LambdaQueryWrapper<TEmployee> employeeSqlWhereWrapper = new LambdaQueryWrapper<TEmployee>()
-                        .notIn(TEmployee::getEmployeeId, hasSelectedEmployeeIds);
+                        .notIn(ObjectUtils.isNotEmpty(hasSelectedEmployeeIds), TEmployee::getEmployeeId, hasSelectedEmployeeIds);
                 List<TEmployee> neverSelectedEmployees = tEmployeeMapper.selectList(employeeSqlWhereWrapper);
                 // 本轮中奖的Employees
                 Integer drawQuantity = (tAward.getRemainQuantity() < tAward.getOnceQuantity()) ? tAward.getRemainQuantity() : tAward.getOnceQuantity();
