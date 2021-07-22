@@ -60,13 +60,20 @@
         </template>
         <!-- 操作 -->
         <template #operation="{ record }">
-          <a-popconfirm
-            v-if="dataSource.length"
-            title="Sure to delete?"
-            @confirm="onDelete(record.jobId)"
-          >
-            <a>Delete</a>
-          </a-popconfirm>
+          <a-space size="small">
+            <a-button type="primary" @click="doJob(record.jobId)">
+              抽奖
+            </a-button>
+            <a-popconfirm
+              v-if="dataSource.length"
+              title="是否确认删除?"
+              @confirm="onDelete(record.jobId)"
+            >
+              <a-button type="danger">
+                删除
+              </a-button>
+            </a-popconfirm>
+          </a-space>
         </template>
       </a-table>
     </a-layout-content>
@@ -127,6 +134,11 @@ export default defineComponent({
     });
   },
   methods: {
+    // 执行抽奖事务
+    doJob(jobId) {
+      console.log(jobId);
+      this.$router.push({ path: "/job/do", query: { jobId: jobId } });
+    },
     // 编辑
     edit(jobId) {
       this.editableData[jobId] = cloneDeep(

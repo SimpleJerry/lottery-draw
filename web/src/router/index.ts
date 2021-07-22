@@ -4,6 +4,7 @@ import About from "../views/about.vue";
 import Test from "../views/test.vue";
 import AdminAward from "../views/admin/admin-award.vue";
 import AdminJob from "../views/admin/admin-job.vue";
+import AdminJobDo from "../views/admin/admin-job-do.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/job",
     name: "AdminJob",
     component: AdminJob,
+  },
+  {
+    path: "/job/do",
+    name: "AdminJobDo",
+    component: AdminJobDo,
   },
   {
     path: "/about",

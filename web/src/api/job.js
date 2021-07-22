@@ -10,3 +10,19 @@ export function list(param) {
         data: param
     })
 }
+
+export function doJob(jobId) {
+    console.log("jobId：", jobId)
+    return axios({
+        url: `${URL_JOB}/${jobId}/do/`,
+        method: 'post'
+    })
+}
+
+export function queryJobResult(jobId) {
+    console.log("jobId：", jobId)
+    return axios({
+        url: `${URL_JOB}/${jobId}/result/`,
+        method: 'get'
+    })
+}
