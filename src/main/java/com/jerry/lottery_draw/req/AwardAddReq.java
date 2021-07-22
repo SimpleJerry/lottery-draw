@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 public class AwardAddReq {
 
     @NotEmpty(message = "【组织Id】不能为空")
-    @ApiModelProperty(value = "奖品Id", required = true)
+    @ApiModelProperty(value = "组织Id", required = true)
     private String groupId;
 
     @NotEmpty(message = "【奖品名称】不能为空")

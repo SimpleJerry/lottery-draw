@@ -3,6 +3,7 @@ package com.jerry.lottery_draw.controller;
 import com.jerry.lottery_draw.req.AwardAddReq;
 import com.jerry.lottery_draw.req.AwardQueryReq;
 import com.jerry.lottery_draw.req.AwardUpdateReq;
+import com.jerry.lottery_draw.req.AwardsResetReq;
 import com.jerry.lottery_draw.resp.AwardQueryResp;
 import com.jerry.lottery_draw.resp.CommonResp;
 import com.jerry.lottery_draw.service.AwardService;
@@ -99,11 +100,25 @@ public class AwardController {
      * @param awardId String
      * @return null
      */
-    @ApiOperation(value = "重置奖品状态", notes = "", response = CommonResp.class)
+    @ApiOperation(value = "重置奖品状态(单个)", notes = "", response = CommonResp.class)
     @PutMapping("/{awardId}/reset")
     public CommonResp<Object> reset(@PathVariable String awardId) {
         CommonResp<Object> resp = new CommonResp<>();
         awardService.reset(awardId);
+        return resp;
+    }
+
+    /**
+     * 重置奖品状态
+     *
+     * @param req AwardsResetReq
+     * @return null
+     */
+    @ApiOperation(value = "重置奖品状态(批量)", notes = "", response = CommonResp.class)
+    @PutMapping("/reset")
+    public CommonResp<Object> reset(@RequestBody @Valid AwardsResetReq req) {
+        CommonResp<Object> resp = new CommonResp<>();
+        awardService.reset(req);
         return resp;
     }
 }

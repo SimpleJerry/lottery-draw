@@ -10,6 +10,7 @@ import com.jerry.lottery_draw.mapper.TAwardMapper;
 import com.jerry.lottery_draw.req.AwardAddReq;
 import com.jerry.lottery_draw.req.AwardQueryReq;
 import com.jerry.lottery_draw.req.AwardUpdateReq;
+import com.jerry.lottery_draw.req.AwardsResetReq;
 import com.jerry.lottery_draw.resp.AwardQueryResp;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -147,6 +148,26 @@ public class AwardService {
         tAward.setRemainQuantity(tAward.getTotalQuantity());
         // 执行更新
         tAwardMapper.updateById(tAward);
+    }
+
+    /**
+     * 重置奖品状态
+     *
+     * @param req AwardsResetReq
+     */
+    public void reset(AwardsResetReq req) {
+        LambdaQueryWrapper<TAward> sqlWhereWrapper = new LambdaQueryWrapper<TAward>()
+                .in(TAward::getAwardId, req.getAwardIds());
+        List<TAward> tAwards = tAwardMapper.selectList(sqlWhereWrapper);
+        if (ObjectUtil.isEmpty(tAwards)) {
+            log.info("奖品不存在");
+            throw new BusinessException(BusinessExceptionCode.AWARD_NOT_EXISTS);
+        }
+        for (TAward tAward : tAwards) {
+            tAward.setRemainQuantity(tAward.getTotalQuantity());
+            // 执行更新
+            tAwardMapper.updateById(tAward);
+        }
     }
 
 }
