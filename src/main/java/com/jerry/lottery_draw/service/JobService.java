@@ -11,6 +11,7 @@ import com.jerry.lottery_draw.req.JobCreateReq;
 import com.jerry.lottery_draw.req.JobQueryReq;
 import com.jerry.lottery_draw.resp.JobDoResp;
 import com.jerry.lottery_draw.resp.JobQueryResp;
+import com.jerry.lottery_draw.resp.JobResultQueryResp;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -155,7 +156,10 @@ public class JobService {
             // 如果无剩余则会自动跳过
             if (tAward.getRemainQuantity() > 0) {
                 // 根据jobId获取中过奖的EmployeeIds，并获取没中过奖的TEmployee
-                List<String> hasSelectedEmployeeIds = queryJobResult(jobId).stream()
+                LambdaQueryWrapper<TJobResult> selectEmployeeWrapper = new LambdaQueryWrapper<TJobResult>()
+                        .eq(ObjectUtils.isNotEmpty(jobId), TJobResult::getJobId, jobId);
+                List<String> hasSelectedEmployeeIds = tJobResultMapper.selectList(selectEmployeeWrapper).
+                        stream()
                         .map(TJobResult::getEmployeeId)
                         .collect(Collectors.toList());
                 LambdaQueryWrapper<TEmployee> employeeSqlWhereWrapper = new LambdaQueryWrapper<TEmployee>()
@@ -198,10 +202,14 @@ public class JobService {
      * @param jobId Long
      * @return List<TJobResult>
      */
-    public List<TJobResult> queryJobResult(Long jobId) {
+    public JobResultQueryResp queryJobResult(Long jobId) {
+        JobResultQueryResp res = new JobResultQueryResp();
+        res.setJobId(jobId);
         LambdaQueryWrapper<TJobResult> sqlWhereWrapper = new LambdaQueryWrapper<TJobResult>()
                 .eq(ObjectUtils.isNotEmpty(jobId), TJobResult::getJobId, jobId);
-        return tJobResultMapper.selectList(sqlWhereWrapper);
+        List<JobResultQueryResp.Info> infoList = tJobResultMapper.selectJobResults(sqlWhereWrapper);
+        res.setInfoList(infoList);
+        return res;
     }
 
 }

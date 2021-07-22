@@ -1,11 +1,11 @@
 package com.jerry.lottery_draw.controller;
 
-import com.jerry.lottery_draw.domain.TJobResult;
 import com.jerry.lottery_draw.req.JobCreateReq;
 import com.jerry.lottery_draw.req.JobQueryReq;
 import com.jerry.lottery_draw.resp.CommonResp;
-import com.jerry.lottery_draw.resp.JobQueryResp;
 import com.jerry.lottery_draw.resp.JobDoResp;
+import com.jerry.lottery_draw.resp.JobQueryResp;
+import com.jerry.lottery_draw.resp.JobResultQueryResp;
 import com.jerry.lottery_draw.service.JobService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -96,12 +96,12 @@ public class JobController {
      * 查询抽奖结果
      *
      * @param jobId Long
-     * @return List<TJobResult>
+     * @return JobResultQueryResp
      */
     @ApiOperation(value = "查询抽奖结果", notes = "", response = CommonResp.class)
     @GetMapping("/{jobId}/result")
-    public CommonResp<List<TJobResult>> queryJobResult(@PathVariable Long jobId) {
-        CommonResp<List<TJobResult>> resp = new CommonResp<>();
+    public CommonResp<JobResultQueryResp> queryJobResult(@PathVariable Long jobId) {
+        CommonResp<JobResultQueryResp> resp = new CommonResp<>();
         resp.setContent(jobService.queryJobResult(jobId));
         return resp;
     }
