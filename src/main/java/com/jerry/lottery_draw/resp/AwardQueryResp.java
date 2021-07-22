@@ -2,6 +2,8 @@ package com.jerry.lottery_draw.resp;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class AwardQueryResp {
 
@@ -18,6 +20,10 @@ public class AwardQueryResp {
     private Integer priority;
 
     private String img;
+
+    private Date createdAt;
+
+    private Date updatedAt;
 
     private String groupId;
 
