@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.jerry</groupId>
-    <artifactId>lottery_draw_v1.0</artifactId>
+    <artifactId>lottery_draw</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>lottery_draw</name>
     <description>企业抽奖程序</description>
@@ -84,7 +84,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>/dist/${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
