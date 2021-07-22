@@ -77,6 +77,8 @@ import { defineComponent } from "vue";
 import { CheckOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { cloneDeep } from "lodash-es";
 import * as JobApi from "@/api/job";
+import moment from "moment";
+moment.locale("zh-cn");
 export default defineComponent({
   name: "AdminJob",
   components: {
@@ -86,7 +88,9 @@ export default defineComponent({
   data() {
     return {
       groupId: "G_0001",
-      param: {},
+      param: {
+        groupId: "G_0001",
+      },
       // 数据区域
       columns: [
         {
@@ -99,6 +103,9 @@ export default defineComponent({
         {
           title: "创建时间",
           dataIndex: "time",
+          customRender: (text, record, index) => {
+            return moment(text).format("YYYY-MM-DD HH:mm:ss");
+          },
         },
         {
           title: "操作",
@@ -115,7 +122,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    JobApi.listJob(this.groupId).then((response) => {
+    JobApi.list(this.param).then((response) => {
       this.dataSource = response.data.content;
     });
   },

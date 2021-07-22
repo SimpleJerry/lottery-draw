@@ -2,15 +2,11 @@ import axios from "axios"
 
 const URL_AWARD = '/award'
 
-export function showOne(assetId) {
+export function list(param) {
+    console.log("请求参数为：", param)
     return axios({
-        url: `${URL_AWARD}/show-one/${assetId}`,
-        method: 'get'
-    })
-}
-export function showAll(groupId) {
-    return axios({
-        url: `${URL_AWARD}/show-all/${groupId}`,
-        method: 'get'
+        url: `${URL_AWARD}/`,
+        method: 'post',
+        data: param
     })
 }

@@ -77,6 +77,8 @@ import { defineComponent } from "vue";
 import { CheckOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { cloneDeep } from "lodash-es";
 import * as AwardApi from "@/api/award";
+import moment from "moment";
+moment.locale("zh-cn");
 export default defineComponent({
   name: "AdminAward",
   components: {
@@ -86,6 +88,7 @@ export default defineComponent({
   data() {
     return {
       groupId: "G_0001",
+      // 查询全部奖品Param
       param: {},
       // 数据区域
       columns: [
@@ -126,10 +129,16 @@ export default defineComponent({
         {
           title: "创建时间",
           dataIndex: "createdAt",
+          customRender: (text, record, index) => {
+            return moment(text).format("YYYY-MM-DD HH:mm:ss");
+          },
         },
         {
           title: "更新时间",
           dataIndex: "updatedAt",
+          customRender: (text, record, index) => {
+            return moment(text).format("YYYY-MM-DD HH:mm:ss");
+          },
         },
         {
           title: "操作",
@@ -146,7 +155,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    AwardApi.showAll(this.groupId).then((response) => {
+    AwardApi.list(this.param).then((response) => {
       this.dataSource = response.data.content;
     });
   },
