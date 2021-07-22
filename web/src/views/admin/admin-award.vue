@@ -23,7 +23,7 @@
             </a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="add()"> 新增 </a-button>
+            <a-button type="primary" @click="onCreate()"> 新增 </a-button>
           </a-form-item>
         </a-form>
       </p>
@@ -62,10 +62,12 @@
         <template #operation="{ record }">
           <a-popconfirm
             v-if="dataSource.length"
-            title="Sure to delete?"
-            @confirm="onDelete(record.awardId)"
+            title="是否确定重置?"
+            @confirm="onReset(record.awardId)"
           >
-            <a>Delete</a>
+            <a-button type="danger">
+              重置
+            </a-button>
           </a-popconfirm>
         </template>
       </a-table>
@@ -90,6 +92,10 @@ export default defineComponent({
       groupId: "G_0001",
       // 查询全部奖品Param
       param: {},
+      createParam: {
+        groupId: this.groupId,
+        awardIds: ["A_0001", "A_0002", "A_0003", "A_0004", "A_0005"],
+      },
       // 数据区域
       columns: [
         {
@@ -129,14 +135,14 @@ export default defineComponent({
         {
           title: "创建时间",
           dataIndex: "createdAt",
-          customRender: (text, record, index) => {
+          customRender: (text) => {
             return moment(text).format("YYYY-MM-DD HH:mm:ss");
           },
         },
         {
           title: "更新时间",
           dataIndex: "updatedAt",
-          customRender: (text, record, index) => {
+          customRender: (text) => {
             return moment(text).format("YYYY-MM-DD HH:mm:ss");
           },
         },
@@ -155,11 +161,14 @@ export default defineComponent({
     };
   },
   mounted() {
-    AwardApi.list(this.param).then((response) => {
-      this.dataSource = response.data.content;
-    });
+    this.refresh();
   },
   methods: {
+    refresh() {
+      AwardApi.list(this.param).then((response) => {
+        this.dataSource = response.data.content;
+      });
+    },
     // 编辑
     edit(awardId) {
       this.editableData[awardId] = cloneDeep(
@@ -173,14 +182,15 @@ export default defineComponent({
       );
       delete this.editableData[awardId];
     },
-    onDelete(awardId) {
-      this.dataSource.value = this.dataSource.filter(
-        (item) => item.awardId !== awardId
-      );
+    onReset(awardId) {
+      AwardApi.reset(awardId).then((response) => {
+        this.refresh();
+      });
     },
-    add() {
-      const newData = {};
-      this.dataSource.value.push(newData);
+    onCreate() {
+      AwardApi.create(this.createParam).then((response) => {
+        this.refresh();
+      });
     },
   },
   setup() {

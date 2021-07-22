@@ -10,7 +10,7 @@
     >
       <!-- 查询栏 & 新增栏 -->
       <p>
-        <a-form layout="inline" :model="param">
+        <a-form layout="inline" :model="listParam">
           <a-form-item>
             <a-input placeholder="奖品名"> </a-input>
           </a-form-item>
@@ -23,7 +23,7 @@
             </a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="add()"> 新增 </a-button>
+            <a-button type="primary" @click="onCreate()"> 新增 </a-button>
           </a-form-item>
         </a-form>
       </p>
@@ -95,8 +95,12 @@ export default defineComponent({
   data() {
     return {
       groupId: "G_0001",
-      param: {
+      listParam: {
         groupId: "G_0001",
+      },
+      createParam: {
+        groupId: "G_0001",
+        awardIds: ["A_0001", "A_0002", "A_0003", "A_0004", "A_0005"],
       },
       // 数据区域
       columns: [
@@ -110,7 +114,7 @@ export default defineComponent({
         {
           title: "创建时间",
           dataIndex: "time",
-          customRender: (text, record, index) => {
+          customRender: (text) => {
             return moment(text).format("YYYY-MM-DD HH:mm:ss");
           },
         },
@@ -129,11 +133,14 @@ export default defineComponent({
     };
   },
   mounted() {
-    JobApi.list(this.param).then((response) => {
-      this.dataSource = response.data.content;
-    });
+    this.refresh();
   },
   methods: {
+    refresh() {
+      JobApi.list(this.listParam).then((response) => {
+        this.dataSource = response.data.content;
+      });
+    },
     // 执行抽奖事务
     doJob(jobId) {
       console.log(jobId);
@@ -153,13 +160,14 @@ export default defineComponent({
       delete this.editableData[jobId];
     },
     onDelete(jobId) {
-      this.dataSource.value = this.dataSource.filter(
-        (item) => item.jobId !== jobId
-      );
+      JobApi.deleteJob(jobId).then((response) => {
+        this.refresh();
+      });
     },
-    add() {
-      const newData = {};
-      this.dataSource.value.push(newData);
+    onCreate() {
+      JobApi.create(this.createParam).then((response) => {
+        this.refresh();
+      });
     },
   },
   setup() {
